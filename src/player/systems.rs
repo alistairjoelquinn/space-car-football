@@ -87,3 +87,35 @@ pub fn player_movement(
             direction * PLAYER_SPEED * time.delta_seconds();
     }
 }
+
+pub fn set_window_boundary(
+    mut query: Query<&mut Transform, With<Player>>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+) {
+    for mut transform in query.iter_mut() {
+        let window = window_query.get_single().unwrap();
+
+        let x_min = 55.0;
+        let x_max = window.width() - 55.0;
+        let y_min = 20.00;
+        let y_max = window.height() - 25.0;
+
+        let mut translation = transform.translation;
+
+        // bound the player x position
+        if translation.x < x_min {
+            translation.x = x_min;
+        } else if translation.x > x_max {
+            translation.x = x_max;
+        }
+
+        // bound the player y position
+        if translation.y < y_min {
+            translation.y = y_min;
+        } else if translation.y > y_max {
+            translation.y = y_max;
+        }
+
+        transform.translation = translation;
+    }
+}
