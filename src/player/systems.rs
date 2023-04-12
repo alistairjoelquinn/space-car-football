@@ -1,4 +1,9 @@
-pub const PLAYER_SPEED: f32 = 300.0;
+use bevy::prelude::*;
+use bevy::window::PrimaryWindow;
+
+use super::components::Player;
+
+// pub const PLAYER_SPEED: f32 = 300.0;
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -14,9 +19,9 @@ pub fn spawn_player(
                 window.height() / 2.0,
                 0.0,
             ),
-            texture: asset_server.load("sprites/ball_blue_large.png"),
+            texture: asset_server.load("sprites/car_one.png"),
             ..default()
         },
-        Player {},
+        Player { score: 0 },
     ));
 }
