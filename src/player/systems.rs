@@ -3,7 +3,7 @@ use bevy::window::PrimaryWindow;
 
 use super::components::Player;
 
-// pub const PLAYER_SPEED: f32 = 300.0;
+pub const PLAYER_SPEED: f32 = 300.0;
 
 pub fn spawn_players(
     mut commands: Commands,
@@ -35,4 +35,55 @@ pub fn spawn_players(
         },
         Player { id: 2, score: 0 },
     ));
+}
+
+pub fn player_movement(
+    keyboard_input: Res<Input<KeyCode>>,
+    mut query: Query<(&mut Transform, &Player)>,
+    time: Res<Time>,
+) {
+    for (mut transform, player) in query.iter_mut() {
+        let mut direction = Vec3::ZERO;
+
+        if player.id == 1 {
+            if keyboard_input.pressed(KeyCode::A) {
+                direction += Vec3::new(-1.0, 0.0, 0.0);
+            }
+
+            if keyboard_input.pressed(KeyCode::D) {
+                direction += Vec3::new(1.0, 0.0, 0.0);
+            }
+
+            if keyboard_input.pressed(KeyCode::W) {
+                direction += Vec3::new(0.0, 1.0, 0.0);
+            }
+
+            if keyboard_input.pressed(KeyCode::S) {
+                direction += Vec3::new(0.0, -1.0, 0.0);
+            }
+        } else if player.id == 2 {
+            if keyboard_input.pressed(KeyCode::Left) {
+                direction += Vec3::new(-1.0, 0.0, 0.0);
+            }
+
+            if keyboard_input.pressed(KeyCode::Right) {
+                direction += Vec3::new(1.0, 0.0, 0.0);
+            }
+
+            if keyboard_input.pressed(KeyCode::Up) {
+                direction += Vec3::new(0.0, 1.0, 0.0);
+            }
+
+            if keyboard_input.pressed(KeyCode::Down) {
+                direction += Vec3::new(0.0, -1.0, 0.0);
+            }
+        }
+
+        if direction.length() > 0.0 {
+            direction = direction.normalize();
+        }
+
+        transform.translation +=
+            direction * PLAYER_SPEED * time.delta_seconds();
+    }
 }
