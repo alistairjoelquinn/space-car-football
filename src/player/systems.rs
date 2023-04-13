@@ -69,22 +69,49 @@ pub fn player_movement(
 ) {
     for (mut transform, player) in query.iter_mut() {
         let mut direction = Vec3::ZERO;
+        let mut rotation = transform.rotation;
 
         if player.id == 1 {
             if keyboard_input.pressed(KeyCode::A) {
                 direction += Vec3::new(-1.0, 0.0, 0.0);
+                rotation = Quat::from_rotation_z(EAST);
+                if keyboard_input.pressed(KeyCode::W) {
+                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                }
+                if keyboard_input.pressed(KeyCode::S) {
+                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                }
             }
 
             if keyboard_input.pressed(KeyCode::D) {
                 direction += Vec3::new(1.0, 0.0, 0.0);
+                rotation = Quat::from_rotation_z(EAST);
+                if keyboard_input.pressed(KeyCode::W) {
+                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                }
+                if keyboard_input.pressed(KeyCode::S) {
+                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                }
             }
 
             if keyboard_input.pressed(KeyCode::W) {
                 direction += Vec3::new(0.0, 1.0, 0.0);
+                if keyboard_input.pressed(KeyCode::A) {
+                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                }
+                if keyboard_input.pressed(KeyCode::D) {
+                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                }
             }
 
             if keyboard_input.pressed(KeyCode::S) {
                 direction += Vec3::new(0.0, -1.0, 0.0);
+                if keyboard_input.pressed(KeyCode::D) {
+                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                }
+                if keyboard_input.pressed(KeyCode::A) {
+                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                }
             }
         } else if player.id == 2 {
             if keyboard_input.pressed(KeyCode::Left) {
@@ -110,6 +137,7 @@ pub fn player_movement(
 
         transform.translation +=
             direction * PLAYER_SPEED * time.delta_seconds();
+        transform.rotation = rotation;
     }
 }
 
