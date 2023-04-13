@@ -1,6 +1,7 @@
 use bevy::prelude::*;
-
 use bevy::window::PresentMode;
+use bevy_rapier2d::prelude::*;
+
 use car_football::game::systems::spawn_camera;
 use car_football::player::PlayerPlugin;
 
@@ -20,6 +21,12 @@ fn main() {
             }),
             ..default()
         }))
+        .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(200.0))
+        .add_plugin(RapierDebugRenderPlugin::default())
+        .insert_resource(RapierConfiguration {
+            gravity: Vec2::ZERO,
+            ..Default::default()
+        })
         .add_plugin(PlayerPlugin)
         .add_startup_system(spawn_camera)
         .run();

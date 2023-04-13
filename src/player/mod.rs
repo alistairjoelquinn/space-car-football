@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
 
+pub mod colliders;
 pub mod components;
 pub mod systems;
 

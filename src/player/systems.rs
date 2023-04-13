@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
+use bevy_rapier2d::prelude::*;
 
 use super::components::Player;
 use super::*;
@@ -13,35 +14,41 @@ pub fn spawn_players(
 ) {
     let window = window_query.get_single().unwrap();
 
-    commands.spawn((
-        SpriteBundle {
-            transform: Transform {
-                translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
-                rotation: Quat::from_rotation_z(RIGHT),
+    commands
+        .spawn((
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
+                    rotation: Quat::from_rotation_z(RIGHT),
+                    ..default()
+                },
+                texture: asset_server.load("sprites/car_one.png"),
                 ..default()
             },
-            texture: asset_server.load("sprites/car_one.png"),
-            ..default()
-        },
-        Player { id: 1, score: 0 },
-    ));
+            Player { id: 1, score: 0 },
+        ))
+        .insert(RigidBody::Dynamic)
+        .insert(Collider::ball(32.0));
 
-    commands.spawn((
-        SpriteBundle {
-            transform: Transform {
-                translation: Vec3::new(
-                    window.width() - 100.0,
-                    window.height() / 2.0,
-                    0.0,
-                ),
-                rotation: Quat::from_rotation_z(RIGHT),
+    commands
+        .spawn((
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(
+                        window.width() - 100.0,
+                        window.height() / 2.0,
+                        0.0,
+                    ),
+                    rotation: Quat::from_rotation_z(RIGHT),
+                    ..default()
+                },
+                texture: asset_server.load("sprites/car_two.png"),
                 ..default()
             },
-            texture: asset_server.load("sprites/car_two.png"),
-            ..default()
-        },
-        Player { id: 2, score: 0 },
-    ));
+            Player { id: 2, score: 0 },
+        ))
+        .insert(RigidBody::Dynamic)
+        .insert(Collider::ball(32.0));
 }
 
 pub fn player_movement(
