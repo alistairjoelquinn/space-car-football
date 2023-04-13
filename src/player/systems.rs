@@ -1,28 +1,10 @@
-use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
-
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 use super::components::Player;
+use super::*;
 
 pub const PLAYER_SPEED: f32 = 300.0;
-
-/// The rotation (in radians) for a sprite to faceØ north
-pub const NORTH: f32 = FRAC_PI_2;
-/// The rotation (in radians) for a sprite to face north east
-pub const NORTH_EAST: f32 = FRAC_PI_4;
-/// The rotation (in radians) for a sprite to face east
-pub const EAST: f32 = 0.0;
-/// The rotation (in radians) for a sprite to face south east
-pub const SOUTH_EAST: f32 = PI + FRAC_PI_2 + FRAC_PI_4;
-/// The rotation (in radians) for a sprite to face south
-pub const SOUTH: f32 = PI + FRAC_PI_2;
-/// The rotation (in radians) for a sprite to face south west
-pub const SOUTH_WEST: f32 = PI + FRAC_PI_4;
-/// The rotation (in radians) for a sprite to face west
-pub const WEST: f32 = PI;
-/// The rotation (in radians) for a sprite to face north west
-pub const NORTH_WEST: f32 = FRAC_PI_2 + FRAC_PI_4;
 
 pub fn spawn_players(
     mut commands: Commands,
@@ -35,7 +17,7 @@ pub fn spawn_players(
         SpriteBundle {
             transform: Transform {
                 translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
-                rotation: Quat::from_rotation_z(EAST),
+                rotation: Quat::from_rotation_z(RIGHT),
                 ..default()
             },
             texture: asset_server.load("sprites/car_one.png"),
@@ -52,7 +34,7 @@ pub fn spawn_players(
                     window.height() / 2.0,
                     0.0,
                 ),
-                rotation: Quat::from_rotation_z(EAST),
+                rotation: Quat::from_rotation_z(RIGHT),
                 ..default()
             },
             texture: asset_server.load("sprites/car_two.png"),
@@ -74,43 +56,43 @@ pub fn player_movement(
         if player.id == 1 {
             if keyboard_input.pressed(KeyCode::A) {
                 direction += Vec3::new(-1.0, 0.0, 0.0);
-                rotation = Quat::from_rotation_z(EAST);
+                rotation = Quat::from_rotation_z(RIGHT);
                 if keyboard_input.pressed(KeyCode::W) {
-                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
                 }
                 if keyboard_input.pressed(KeyCode::S) {
-                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
                 }
             }
 
             if keyboard_input.pressed(KeyCode::D) {
                 direction += Vec3::new(1.0, 0.0, 0.0);
-                rotation = Quat::from_rotation_z(EAST);
+                rotation = Quat::from_rotation_z(RIGHT);
                 if keyboard_input.pressed(KeyCode::W) {
-                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
                 }
                 if keyboard_input.pressed(KeyCode::S) {
-                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
                 }
             }
 
             if keyboard_input.pressed(KeyCode::W) {
                 direction += Vec3::new(0.0, 1.0, 0.0);
                 if keyboard_input.pressed(KeyCode::A) {
-                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
                 }
                 if keyboard_input.pressed(KeyCode::D) {
-                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
                 }
             }
 
             if keyboard_input.pressed(KeyCode::S) {
                 direction += Vec3::new(0.0, -1.0, 0.0);
                 if keyboard_input.pressed(KeyCode::D) {
-                    rotation = Quat::from_rotation_z(SOUTH_EAST);
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
                 }
                 if keyboard_input.pressed(KeyCode::A) {
-                    rotation = Quat::from_rotation_z(NORTH_EAST);
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
                 }
             }
         } else if player.id == 2 {
