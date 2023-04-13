@@ -98,18 +98,44 @@ pub fn player_movement(
         } else if player.id == 2 {
             if keyboard_input.pressed(KeyCode::Left) {
                 direction += Vec3::new(-1.0, 0.0, 0.0);
+                rotation = Quat::from_rotation_z(RIGHT);
+                if keyboard_input.pressed(KeyCode::Up) {
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+                }
+                if keyboard_input.pressed(KeyCode::Down) {
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
+                }
             }
 
             if keyboard_input.pressed(KeyCode::Right) {
                 direction += Vec3::new(1.0, 0.0, 0.0);
+                rotation = Quat::from_rotation_z(RIGHT);
+                if keyboard_input.pressed(KeyCode::Up) {
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
+                }
+                if keyboard_input.pressed(KeyCode::Down) {
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+                }
             }
 
             if keyboard_input.pressed(KeyCode::Up) {
                 direction += Vec3::new(0.0, 1.0, 0.0);
+                if keyboard_input.pressed(KeyCode::Left) {
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+                }
+                if keyboard_input.pressed(KeyCode::Right) {
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
+                }
             }
 
             if keyboard_input.pressed(KeyCode::Down) {
                 direction += Vec3::new(0.0, -1.0, 0.0);
+                if keyboard_input.pressed(KeyCode::Right) {
+                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+                }
+                if keyboard_input.pressed(KeyCode::Left) {
+                    rotation = Quat::from_rotation_z(TOP_RIGHT);
+                }
             }
         }
 
