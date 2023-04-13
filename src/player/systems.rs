@@ -1,9 +1,28 @@
+use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
+
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 
 use super::components::Player;
 
 pub const PLAYER_SPEED: f32 = 300.0;
+
+/// The rotation (in radians) for a sprite to faceØ north
+pub const NORTH: f32 = FRAC_PI_2;
+/// The rotation (in radians) for a sprite to face north east
+pub const NORTH_EAST: f32 = FRAC_PI_4;
+/// The rotation (in radians) for a sprite to face east
+pub const EAST: f32 = 0.0;
+/// The rotation (in radians) for a sprite to face south east
+pub const SOUTH_EAST: f32 = PI + FRAC_PI_2 + FRAC_PI_4;
+/// The rotation (in radians) for a sprite to face south
+pub const SOUTH: f32 = PI + FRAC_PI_2;
+/// The rotation (in radians) for a sprite to face south west
+pub const SOUTH_WEST: f32 = PI + FRAC_PI_4;
+/// The rotation (in radians) for a sprite to face west
+pub const WEST: f32 = PI;
+/// The rotation (in radians) for a sprite to face north west
+pub const NORTH_WEST: f32 = FRAC_PI_2 + FRAC_PI_4;
 
 pub fn spawn_players(
     mut commands: Commands,
@@ -12,24 +31,30 @@ pub fn spawn_players(
 ) {
     let window = window_query.get_single().unwrap();
 
-    // spawn player 1
     commands.spawn((
         SpriteBundle {
-            transform: Transform::from_xyz(100.0, window.height() / 2.0, 0.0),
+            transform: Transform {
+                translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
+                rotation: Quat::from_rotation_z(EAST),
+                ..default()
+            },
             texture: asset_server.load("sprites/car_one.png"),
             ..default()
         },
         Player { id: 1, score: 0 },
     ));
 
-    // spawn player 2
     commands.spawn((
         SpriteBundle {
-            transform: Transform::from_xyz(
-                window.width() - 100.0,
-                window.height() / 2.0,
-                0.0,
-            ),
+            transform: Transform {
+                translation: Vec3::new(
+                    window.width() - 100.0,
+                    window.height() / 2.0,
+                    0.0,
+                ),
+                rotation: Quat::from_rotation_z(EAST),
+                ..default()
+            },
             texture: asset_server.load("sprites/car_two.png"),
             ..default()
         },
@@ -102,14 +127,12 @@ pub fn set_window_boundary(
 
         let mut translation = transform.translation;
 
-        // bound the player x position
         if translation.x < x_min {
             translation.x = x_min;
         } else if translation.x > x_max {
             translation.x = x_max;
         }
 
-        // bound the player y position
         if translation.y < y_min {
             translation.y = y_min;
         } else if translation.y > y_max {
