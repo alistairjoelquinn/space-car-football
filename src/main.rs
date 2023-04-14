@@ -2,6 +2,7 @@ use bevy::prelude::*;
 use bevy::window::PresentMode;
 use bevy_rapier2d::prelude::*;
 
+use car_football::ball::BallPlugin;
 use car_football::game::systems::spawn_camera;
 use car_football::player::PlayerPlugin;
 
@@ -28,6 +29,7 @@ fn main() {
             ..Default::default()
         })
         .add_plugin(PlayerPlugin)
+        .add_plugin(BallPlugin)
         .add_startup_system(spawn_camera)
         .run();
 }
