@@ -20,6 +20,7 @@ pub fn spawn_ball(
                         window.height() / 2.0,
                         0.0,
                     ),
+                    scale: Vec3::splat(0.1),
                     ..default()
                 },
                 texture: asset_server.load("sprites/football.png"),
@@ -28,5 +29,5 @@ pub fn spawn_ball(
             Ball,
         ))
         .insert(RigidBody::Dynamic)
-        .insert(Collider::ball(32.0));
+        .insert(Collider::ball(50.0));
 }
