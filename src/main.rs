@@ -11,6 +11,7 @@ fn main() {
     App::new()
         .add_state::<AppState>()
         .insert_resource(ClearColor(Color::DARK_GREEN))
+        .insert_resource(GameAsset::default())
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 title: "Car Football".into(),
@@ -28,13 +29,11 @@ fn main() {
             gravity: Vec2::ZERO,
             ..Default::default()
         })
-        .insert_resource(GameAsset::default())
         .add_startup_system(spawn_camera)
         .add_systems((
             load_assets.in_schedule(OnEnter(AppState::Loading)),
             check_assets.run_if(in_state(AppState::Loading)),
         ))
-        // .add_plugin(WorldInspectorPlugin::new())
         .add_plugin(PlayerPlugin)
         .add_plugin(BallPlugin)
         .run();
