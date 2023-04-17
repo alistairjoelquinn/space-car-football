@@ -21,7 +21,7 @@ pub fn spawn_players(
 
     println!("hello");
 
-    let sprite_handle = game_assets.image_handles.get("car_handle");
+    let sprite_handle = game_assets.image_handles.get("car_one_handle");
     if sprite_handle.is_none() {
         return;
     }

@@ -24,17 +24,13 @@ pub fn check_assets(
     game_assets: Res<GameAsset>,
     mut state: ResMut<NextState<AppState>>,
 ) {
+    println!("Checking assets");
     for h in game_assets.image_handles.values() {
         if LoadState::Loaded != asset_server.get_load_state(h) {
             return;
         }
     }
 
-    if LoadState::Loaded
-        != asset_server.get_load_state(game_assets.font_handle.clone())
-    {
-        return;
-    }
-
+    println!("Assets loaded");
     state.set(AppState::Running)
 }
