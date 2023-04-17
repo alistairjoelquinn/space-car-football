@@ -29,5 +29,15 @@ pub fn spawn_ball(
             Ball,
         ))
         .insert(RigidBody::Dynamic)
-        .insert(Collider::ball(50.0));
+        .insert(Collider::ball(250.0))
+        .insert(ExternalForce {
+            force: Vec2::ZERO,
+            torque: 0.0,
+        })
+        .insert(Restitution::coefficient(1.2))
+        .insert(Damping {
+            linear_damping: 0.6,
+            angular_damping: 0.3,
+        })
+        .insert(ActiveEvents::COLLISION_EVENTS);
 }
