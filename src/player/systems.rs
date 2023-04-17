@@ -19,23 +19,17 @@ pub fn spawn_players(
 ) {
     let window = window_query.get_single().unwrap();
 
-    println!("hello");
-
-    let sprite_handle = game_assets.image_handles.get("car_one_handle");
-    if sprite_handle.is_none() {
+    let car_one_handle = game_assets.image_handles.get("car_one_handle");
+    if car_one_handle.is_none() {
         return;
     }
-
-    println!("{:?}", sprite_handle);
-    println!("{:?}", sprite_handle.unwrap());
-
-    let sprite_image = image_assets.get(sprite_handle.unwrap()).unwrap();
-    let collider =
-        single_convex_polyline_collider_translated(sprite_image).unwrap();
+    let car_one_image = image_assets.get(car_one_handle.unwrap()).unwrap();
+    let car_one_collider =
+        single_convex_polyline_collider_translated(car_one_image).unwrap();
 
     commands
         .spawn((
-            collider,
+            car_one_collider,
             SpriteBundle {
                 transform: Transform {
                     translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
@@ -59,8 +53,17 @@ pub fn spawn_players(
         })
         .insert(ActiveEvents::COLLISION_EVENTS);
 
+    let car_two_handle = game_assets.image_handles.get("car_two_handle");
+    if car_two_handle.is_none() {
+        return;
+    }
+    let car_two_image = image_assets.get(car_two_handle.unwrap()).unwrap();
+    let car_two_collider =
+        single_convex_polyline_collider_translated(car_two_image).unwrap();
+
     commands
         .spawn((
+            car_two_collider,
             SpriteBundle {
                 transform: Transform {
                     translation: Vec3::new(
