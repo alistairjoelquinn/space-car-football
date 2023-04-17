@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use bevy_rapier2d::prelude::*;
+use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
 use super::components::Player;
 use super::*;
@@ -11,11 +12,29 @@ pub fn spawn_players(
     mut commands: Commands,
     window_query: Query<&Window, With<PrimaryWindow>>,
     asset_server: Res<AssetServer>,
+    image_assets: Res<Assets<Image>>,
 ) {
     let window = window_query.get_single().unwrap();
 
+    let car_one = asset_server.load("sprites/car_one.png");
+
+    println!("{:?}", car_one);
+    println!("{:?}", image_assets.get(&car_one));
+
+    let val = Assets::get(&image_assets, &car_one);
+
+    println!("{:?}", val);
+
+    let unwrapped_val = val.unwrap();
+
+    println!("{:?}", unwrapped_val);
+
+    let collider =
+        single_convex_polyline_collider_translated(unwrapped_val).unwrap();
+
     commands
         .spawn((
+            collider,
             SpriteBundle {
                 transform: Transform {
                     translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
@@ -28,7 +47,16 @@ pub fn spawn_players(
             Player { id: 1, score: 0 },
         ))
         .insert(RigidBody::Dynamic)
-        .insert(Collider::ball(32.0));
+        .insert(ExternalForce {
+            force: Vec2::ZERO,
+            torque: 0.0,
+        })
+        .insert(Restitution::coefficient(1.0))
+        .insert(Damping {
+            linear_damping: 0.6,
+            angular_damping: 0.3,
+        })
+        .insert(ActiveEvents::COLLISION_EVENTS);
 
     commands
         .spawn((
