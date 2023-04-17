@@ -1,5 +1,7 @@
-use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
+use bevy::{asset::LoadState, prelude::*};
+
+use super::components::{AppState, GameAsset};
 
 pub fn spawn_camera(
     mut commands: Commands,
@@ -15,4 +17,24 @@ pub fn spawn_camera(
         ),
         ..default()
     });
+}
+
+pub fn check_assets(
+    asset_server: Res<AssetServer>,
+    game_assets: Res<GameAsset>,
+    mut state: ResMut<NextState<AppState>>,
+) {
+    for h in game_assets.image_handles.values() {
+        if LoadState::Loaded != asset_server.get_load_state(h) {
+            return;
+        }
+    }
+
+    if LoadState::Loaded
+        != asset_server.get_load_state(game_assets.font_handle.clone())
+    {
+        return;
+    }
+
+    state.set(AppState::Running)
 }

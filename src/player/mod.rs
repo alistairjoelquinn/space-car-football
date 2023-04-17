@@ -7,6 +7,8 @@ pub mod systems;
 
 use systems::*;
 
+use crate::game::components::AppState;
+
 // rotation in radians for player movement
 pub const TOP_RIGHT: f32 = FRAC_PI_4;
 pub const RIGHT: f32 = 0.0;
@@ -19,8 +21,10 @@ pub struct PlayerPlugin;
 
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
-        app.add_startup_system(spawn_players)
-            .add_system(player_movement)
-            .add_system(set_window_boundary);
+        app.add_systems((
+            spawn_players.in_schedule(OnExit(AppState::Loading)),
+            player_movement.run_if(in_state(AppState::Running)),
+            set_window_boundary.run_if(in_state(AppState::Running)),
+        ));
     }
 }

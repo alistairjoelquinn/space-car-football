@@ -3,6 +3,8 @@ use bevy::window::PrimaryWindow;
 use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
+use crate::game::components::GameAsset;
+
 use super::components::Player;
 use super::*;
 
@@ -12,25 +14,24 @@ pub fn spawn_players(
     mut commands: Commands,
     window_query: Query<&Window, With<PrimaryWindow>>,
     asset_server: Res<AssetServer>,
+    game_assets: Res<GameAsset>,
     image_assets: Res<Assets<Image>>,
 ) {
     let window = window_query.get_single().unwrap();
 
-    let car_one = asset_server.load("sprites/car_one.png");
+    println!("hello");
 
-    println!("{:?}", car_one);
-    println!("{:?}", image_assets.get(&car_one));
+    let sprite_handle = game_assets.image_handles.get("car_handle");
+    if sprite_handle.is_none() {
+        return;
+    }
 
-    let val = Assets::get(&image_assets, &car_one);
+    println!("{:?}", sprite_handle);
+    println!("{:?}", sprite_handle.unwrap());
 
-    println!("{:?}", val);
-
-    let unwrapped_val = val.unwrap();
-
-    println!("{:?}", unwrapped_val);
-
+    let sprite_image = image_assets.get(sprite_handle.unwrap()).unwrap();
     let collider =
-        single_convex_polyline_collider_translated(unwrapped_val).unwrap();
+        single_convex_polyline_collider_translated(sprite_image).unwrap();
 
     commands
         .spawn((
