@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use bevy::window::PrimaryWindow;
 use bevy::{asset::LoadState, prelude::*};
 
@@ -17,6 +19,26 @@ pub fn spawn_camera(
         ),
         ..default()
     });
+}
+
+pub fn load_assets(
+    asset_server: Res<AssetServer>,
+    mut game_assets: ResMut<GameAsset>,
+) {
+    game_assets.image_handles = HashMap::from([
+        (
+            "car_one_handle".into(),
+            asset_server.load("sprites/car_one.png"),
+        ),
+        (
+            "car_two_handle".into(),
+            asset_server.load("sprites/car_two.png"),
+        ),
+        (
+            "ball_handle".into(),
+            asset_server.load("sprites/football.png"),
+        ),
+    ]);
 }
 
 pub fn check_assets(

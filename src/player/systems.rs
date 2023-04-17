@@ -79,8 +79,7 @@ pub fn spawn_players(
             },
             Player { id: 2, score: 0 },
         ))
-        .insert(RigidBody::Dynamic)
-        .insert(Collider::ball(32.0));
+        .insert(RigidBody::Dynamic);
 }
 
 pub fn player_movement(
