@@ -7,7 +7,7 @@ pub mod systems;
 
 use systems::*;
 
-use crate::game::components::AppState;
+use crate::game::resources::AppState;
 
 // rotation in radians for player movement
 pub const TOP_RIGHT: f32 = FRAC_PI_4;

@@ -3,7 +3,7 @@ use bevy::window::PrimaryWindow;
 use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
-use crate::game::components::GameAsset;
+use crate::game::resources::GameAsset;
 
 use super::components::Player;
 use super::*;
@@ -46,7 +46,7 @@ pub fn spawn_players(
             force: Vec2::ZERO,
             torque: 0.0,
         })
-        .insert(Restitution::coefficient(1.0))
+        .insert(Restitution::coefficient(0.2))
         .insert(Damping {
             linear_damping: 0.6,
             angular_damping: 0.3,
@@ -79,7 +79,17 @@ pub fn spawn_players(
             },
             Player { id: 2, score: 0 },
         ))
-        .insert(RigidBody::Dynamic);
+        .insert(RigidBody::Dynamic)
+        .insert(ExternalForce {
+            force: Vec2::ZERO,
+            torque: 0.0,
+        })
+        .insert(Restitution::coefficient(0.2))
+        .insert(Damping {
+            linear_damping: 0.6,
+            angular_damping: 0.3,
+        })
+        .insert(ActiveEvents::COLLISION_EVENTS);
 }
 
 pub fn player_movement(

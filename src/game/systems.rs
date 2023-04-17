@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use bevy::window::PrimaryWindow;
 use bevy::{asset::LoadState, prelude::*};
 
-use super::components::{AppState, GameAsset};
+use super::resources::{AppState, GameAsset};
 
 pub fn spawn_camera(
     mut commands: Commands,
