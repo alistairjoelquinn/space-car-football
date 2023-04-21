@@ -4,7 +4,9 @@ use bevy_rapier2d::prelude::*;
 
 use car_football::ball::BallPlugin;
 use car_football::game::resources::{AppState, GameAsset};
-use car_football::game::systems::{check_assets, load_assets, spawn_camera};
+use car_football::game::systems::{
+    check_assets, load_assets, spawn_camera, spawn_set,
+};
 use car_football::player::PlayerPlugin;
 
 fn main() {

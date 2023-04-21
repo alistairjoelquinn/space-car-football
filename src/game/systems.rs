@@ -28,14 +28,24 @@ pub fn spawn_set(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 pub fn build_set(
     commands: &mut Commands,
-    asset_server: &Res<AssetServer>,
+    _asset_server: &Res<AssetServer>,
 ) -> Entity {
-    commands.spawn(
-        (NodeBundle {
-            style: {},
+    let set = commands
+        .spawn(NodeBundle {
+            style: Style {
+                flex_direction: FlexDirection::Column,
+                justify_content: JustifyContent::Center,
+                align_items: AlignItems::Center,
+                size: Size::new(Val::Percent(90.0), Val::Percent(90.0)),
+                gap: Size::new(Val::Px(8.0), Val::Px(8.0)),
+                ..default()
+            },
+            background_color: Color::AZURE.into(),
+
             ..default()
-        }),
-    )
+        })
+        .id();
+    set
 }
 
 pub fn load_assets(
