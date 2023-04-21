@@ -30,6 +30,7 @@ fn main() {
             ..Default::default()
         })
         .add_startup_system(spawn_camera)
+        .add_startup_system(spawn_set)
         .add_systems((
             load_assets.in_schedule(OnEnter(AppState::Loading)),
             check_assets.run_if(in_state(AppState::Loading)),

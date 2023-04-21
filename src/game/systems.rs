@@ -17,8 +17,25 @@ pub fn spawn_camera(
             window.height() / 2.0,
             0.0,
         ),
+
         ..default()
     });
+}
+
+pub fn spawn_set(mut commands: Commands, asset_server: Res<AssetServer>) {
+    build_set(&mut commands, &asset_server);
+}
+
+pub fn build_set(
+    commands: &mut Commands,
+    asset_server: &Res<AssetServer>,
+) -> Entity {
+    commands.spawn(
+        (NodeBundle {
+            style: {},
+            ..default()
+        }),
+    )
 }
 
 pub fn load_assets(
