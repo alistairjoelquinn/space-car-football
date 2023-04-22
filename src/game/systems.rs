@@ -41,7 +41,7 @@ pub fn build_set(
                 ..default()
             },
             background_color: Color::AZURE.into(),
-
+            z_index: ZIndex::Global(0),
             ..default()
         })
         .id();

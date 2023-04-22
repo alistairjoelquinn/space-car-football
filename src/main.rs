@@ -7,6 +7,7 @@ use car_football::game::resources::{AppState, GameAsset};
 use car_football::game::systems::{
     check_assets, load_assets, spawn_camera, spawn_set,
 };
+use car_football::player::systems::spawn_players;
 use car_football::player::PlayerPlugin;
 
 fn main() {
@@ -32,7 +33,7 @@ fn main() {
             ..Default::default()
         })
         .add_startup_system(spawn_camera)
-        .add_startup_system(spawn_set)
+        .add_startup_system(spawn_set.before(spawn_players))
         .add_systems((
             load_assets.in_schedule(OnEnter(AppState::Loading)),
             check_assets.run_if(in_state(AppState::Loading)),
