@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::game::resources::AppState;
 
-use super::components::{Loading, Menu, PlayButton};
+use super::components::{GameOver, Loading, Menu, PlayButton, Running};
 
 pub fn spawn_loading_screen(
     mut commands: Commands,
@@ -190,13 +190,15 @@ pub fn click_play_button(
     mut query: Query<&Interaction, (Changed<Interaction>, With<PlayButton>)>,
     mut app_state_next_state: ResMut<NextState<AppState>>,
 ) {
+    println!("user clicked");
     if let Ok(interaction) = query.get_single_mut() {
         match *interaction {
             Interaction::Clicked => {
+                println!("changing state to game running");
                 app_state_next_state.set(AppState::Running);
             }
             _ => {
-                // do nothing
+                println!("do nothing");
             }
         }
     }
@@ -215,20 +217,53 @@ pub fn build_game_screen(commands: &mut Commands) -> Entity {
                     flex_direction: FlexDirection::Column,
                     justify_content: JustifyContent::Center,
                     align_items: AlignItems::Center,
-                    size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
+                    size: Size::new(Val::Percent(80.0), Val::Percent(80.0)),
                     ..default()
                 },
-                background_color: Color::PINK.into(),
+                background_color: Color::GOLD.into(),
                 ..default()
             },
-            Loading {},
+            Running {},
         ))
         .id()
 }
 
 pub fn despawn_game_screen(
     mut commands: Commands,
-    query: Query<Entity, With<Loading>>,
+    query: Query<Entity, With<Running>>,
+) {
+    if let Ok(game_screen) = query.get_single() {
+        commands.entity(game_screen).despawn_recursive();
+    }
+}
+
+pub fn spawn_game_over_screen(mut commands: Commands) {
+    build_game_over_screen(&mut commands);
+}
+
+pub fn build_game_over_screen(commands: &mut Commands) -> Entity {
+    commands
+        .spawn((
+            // screen background
+            NodeBundle {
+                style: Style {
+                    flex_direction: FlexDirection::Column,
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
+                    ..default()
+                },
+                background_color: Color::ORANGE_RED.into(),
+                ..default()
+            },
+            GameOver {},
+        ))
+        .id()
+}
+
+pub fn despawn_game_over_screen(
+    mut commands: Commands,
+    query: Query<Entity, With<GameOver>>,
 ) {
     if let Ok(game_screen) = query.get_single() {
         commands.entity(game_screen).despawn_recursive();
