@@ -1,6 +1,8 @@
 use bevy::prelude::*;
 
-use super::components::{Loading, Menu};
+use crate::game::resources::AppState;
+
+use super::components::{Loading, Menu, PlayButton};
 
 pub fn spawn_loading_screen(
     mut commands: Commands,
@@ -184,6 +186,51 @@ pub fn despawn_menu_screen(
     }
 }
 
-// pub mod create_game_screen() {};
+pub fn click_play_button(
+    mut query: Query<&Interaction, (Changed<Interaction>, With<PlayButton>)>,
+    mut app_state_next_state: ResMut<NextState<AppState>>,
+) {
+    if let Ok(interaction) = query.get_single_mut() {
+        match *interaction {
+            Interaction::Clicked => {
+                app_state_next_state.set(AppState::Running);
+            }
+            _ => {
+                // do nothing
+            }
+        }
+    }
+}
 
-// pub mod create_game_over_screen() {};
+pub fn spawn_game_screen(mut commands: Commands) {
+    build_game_screen(&mut commands);
+}
+
+pub fn build_game_screen(commands: &mut Commands) -> Entity {
+    commands
+        .spawn((
+            // screen background
+            NodeBundle {
+                style: Style {
+                    flex_direction: FlexDirection::Column,
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
+                    ..default()
+                },
+                background_color: Color::PINK.into(),
+                ..default()
+            },
+            Loading {},
+        ))
+        .id()
+}
+
+pub fn despawn_game_screen(
+    mut commands: Commands,
+    query: Query<Entity, With<Loading>>,
+) {
+    if let Ok(game_screen) = query.get_single() {
+        commands.entity(game_screen).despawn_recursive();
+    }
+}
