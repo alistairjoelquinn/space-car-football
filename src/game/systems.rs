@@ -80,7 +80,6 @@ pub fn check_assets(
             return;
         }
     }
-
     println!("Assets loaded");
     state.set(AppState::Running)
 }
