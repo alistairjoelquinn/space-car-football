@@ -54,11 +54,11 @@ pub fn spawn_players(
         })
         .insert(ActiveEvents::COLLISION_EVENTS)
         .insert(InputManagerBundle::<Action> {
-            action_state: ActionState::default(),
             input_map: InputMap::default()
                 .insert(VirtualDPad::wasd(), Action::Move)
                 .set_gamepad(Gamepad { id: 1 })
                 .build(),
+            ..default()
         });
 
     let car_two_handle = game_assets.image_handles.get("car_two_handle");
@@ -99,26 +99,41 @@ pub fn spawn_players(
         })
         .insert(ActiveEvents::COLLISION_EVENTS)
         .insert(InputManagerBundle::<Action> {
-            action_state: ActionState::default(),
             input_map: InputMap::default()
                 .insert(VirtualDPad::arrow_keys(), Action::Move)
                 .set_gamepad(Gamepad { id: 2 })
                 .build(),
+            ..default()
         });
 }
 
-const MOVE_FORCE: f32 = 1500.0;
+// const MOVE_FORCE: f32 = 1500.0;
 
-pub fn player_movement(
-    mut query: Query<(&ActionState<Action>, &mut ExternalForce), With<Player>>,
-    time: Res<Time>,
-) {
-    for (action_state, mut external_force) in query.iter_mut() {
-        let axis_vector =
-            action_state.clamped_axis_pair(Action::Move).unwrap().xy();
-        external_force.force = axis_vector * MOVE_FORCE * time.delta_seconds();
+// Query for the `ActionState` component in your game logic systems!
+pub fn player_movement(query: Query<&ActionState<Action>, With<Player>>) {
+    let action_state = query.single();
+    // If any button in a virtual direction pad is pressed, then the action state is "pressed"
+    if action_state.pressed(Action::Move) {
+        // Virtual direction pads are one of the types which return a DualAxis. The values will be
+        // represented as `-1.0`, `0.0`, or `1.0` depending on the combination of buttons pressed.
+        let axis_pair = action_state.axis_pair(Action::Move).unwrap();
+        println!("Move:");
+        println!("   distance: {}", axis_pair.length());
+        println!("          x: {}", axis_pair.x());
+        println!("          y: {}", axis_pair.y());
     }
 }
+
+// pub fn player_movement(
+//     mut query: Query<(&ActionState<Action>, &mut ExternalForce), With<Player>>,
+//     time: Res<Time>,
+// ) {
+//     for (action_state, mut external_force) in query.iter_mut() {
+//         let axis_vector =
+//             action_state.clamped_axis_pair(Action::Move).unwrap().xy();
+//         external_force.force = axis_vector * MOVE_FORCE * time.delta_seconds();
+//     }
+// }
 
 // pub fn player_movement(
 //     keyboard_input: Res<Input<KeyCode>>,
