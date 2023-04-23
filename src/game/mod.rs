@@ -31,12 +31,15 @@ impl Plugin for GamePlugin {
             // loading systems
             .add_systems((
                 spawn_loading_screen.in_schedule(OnEnter(AppState::Loading)),
-                remove_loading_screen.in_schedule(OnExit(AppState::Loading)),
+                despawn_loading_screen.in_schedule(OnExit(AppState::Loading)),
                 load_assets.in_schedule(OnEnter(AppState::Loading)),
                 check_assets.run_if(in_state(AppState::Loading)),
             ))
             // menu systems
-            .add_systems(())
+            .add_systems((
+                spawn_menu_screen.in_schedule(OnEnter(AppState::Menu)),
+                despawn_menu_screen.in_schedule(OnExit(AppState::Menu)),
+            ))
             // game systems
             .add_systems(())
             // game over systems
