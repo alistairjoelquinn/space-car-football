@@ -17,7 +17,6 @@ pub fn spawn_camera(
             window.height() / 2.0,
             0.0,
         ),
-
         ..default()
     });
 }
@@ -38,10 +37,6 @@ pub fn load_assets(
         (
             "ball_handle".into(),
             asset_server.load("sprites/football.png"),
-        ),
-        (
-            "background_handle".into(),
-            asset_server.load("sprites/space.jpg"),
         ),
     ]);
 }

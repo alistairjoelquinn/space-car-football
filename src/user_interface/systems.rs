@@ -1,6 +1,6 @@
-use bevy::{app::AppExit, prelude::*};
+use bevy::{app::AppExit, prelude::*, window::PrimaryWindow};
 
-use crate::game::resources::AppState;
+use crate::{game::resources::AppState, set::components::Background};
 
 use super::components::*;
 
@@ -39,7 +39,7 @@ pub fn build_loading_screen(
                         flex_direction: FlexDirection::Row,
                         justify_content: JustifyContent::Center,
                         align_items: AlignItems::Center,
-                        size: Size::new(Val::Px(300.0), Val::Px(120.0)),
+                        size: Size::new(Val::Px(400.0), Val::Px(120.0)),
                         ..default()
                     },
                     background_color: Color::BLUE.into(),
@@ -203,28 +203,35 @@ pub fn click_play_button(
     }
 }
 
-pub fn spawn_game_screen(mut commands: Commands) {
-    build_game_screen(&mut commands);
+pub fn spawn_game_screen(
+    mut commands: Commands,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+    asset_server: Res<AssetServer>,
+) {
+    build_game_screen(&mut commands, &window_query, &asset_server);
 }
+pub fn build_game_screen(
+    commands: &mut Commands,
+    window_query: &Query<&Window, With<PrimaryWindow>>,
+    asset_server: &Res<AssetServer>,
+) {
+    let window = window_query.get_single().unwrap();
 
-pub fn build_game_screen(commands: &mut Commands) -> Entity {
-    commands
-        .spawn((
-            // screen background
-            NodeBundle {
-                style: Style {
-                    flex_direction: FlexDirection::Column,
-                    justify_content: JustifyContent::Center,
-                    align_items: AlignItems::Center,
-                    size: Size::new(Val::Percent(80.0), Val::Percent(80.0)),
-                    ..default()
-                },
-                background_color: Color::GOLD.into(),
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform {
+                translation: Vec3::new(
+                    window.width() / 2.0,
+                    window.height() / 2.0,
+                    0.0,
+                ),
                 ..default()
             },
-            Running {},
-        ))
-        .id()
+            texture: asset_server.load("sprites/space.png"),
+            ..default()
+        },
+        Background {},
+    ));
 }
 
 pub fn despawn_game_screen(
