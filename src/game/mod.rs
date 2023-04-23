@@ -20,7 +20,7 @@ impl Plugin for GamePlugin {
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
-                    title: "Car Football".into(),
+                    title: "Space Car Football".into(),
                     resolution: (1200., 700.).into(),
                     present_mode: PresentMode::AutoVsync,
                     fit_canvas_to_parent: true,
