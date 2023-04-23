@@ -147,6 +147,7 @@ pub fn build_menu_screen(
                                         Val::Px(200.0),
                                         Val::Px(80.0),
                                     ),
+
                                     ..default()
                                 },
                                 background_color: Color::BLACK.into(),
@@ -270,7 +271,7 @@ pub fn build_game_over_screen(
                         flex_direction: FlexDirection::Row,
                         justify_content: JustifyContent::Center,
                         align_items: AlignItems::Center,
-                        size: Size::new(Val::Px(300.0), Val::Px(120.0)),
+                        size: Size::new(Val::Px(400.0), Val::Px(120.0)),
                         ..default()
                     },
                     background_color: Color::BLUE.into(),
