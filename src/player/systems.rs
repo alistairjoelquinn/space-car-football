@@ -57,7 +57,6 @@ pub fn spawn_players(
         .insert(InputManagerBundle::<Action> {
             action_state: ActionState::default(),
             input_map: InputMap::default()
-                .insert(DualAxis::left_stick(), Action::Move)
                 .insert(VirtualDPad::wasd(), Action::Move)
                 .set_gamepad(Gamepad { id: 1 })
                 .build(),
@@ -103,7 +102,6 @@ pub fn spawn_players(
         .insert(InputManagerBundle::<Action> {
             action_state: ActionState::default(),
             input_map: InputMap::default()
-                .insert(DualAxis::left_stick(), Action::Move)
                 .insert(VirtualDPad::arrow_keys(), Action::Move)
                 .set_gamepad(Gamepad { id: 2 })
                 .build(),
