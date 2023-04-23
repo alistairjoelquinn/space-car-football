@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 
-use car_football::ball::BallPlugin;
-use car_football::game::GamePlugin;
-use car_football::physics::PhysicsPlugin;
-use car_football::player::PlayerPlugin;
+use space_car_football::ball::BallPlugin;
+use space_car_football::game::GamePlugin;
+use space_car_football::physics::PhysicsPlugin;
+use space_car_football::player::PlayerPlugin;
 
 fn main() {
     App::new()
