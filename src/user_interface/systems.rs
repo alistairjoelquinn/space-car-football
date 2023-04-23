@@ -190,15 +190,13 @@ pub fn click_play_button(
     mut query: Query<&Interaction, (Changed<Interaction>, With<PlayButton>)>,
     mut app_state_next_state: ResMut<NextState<AppState>>,
 ) {
-    println!("user clicked");
     if let Ok(interaction) = query.get_single_mut() {
         match *interaction {
             Interaction::Clicked => {
-                println!("changing state to game running");
                 app_state_next_state.set(AppState::Running);
             }
             _ => {
-                println!("do nothing");
+                // do nothing
             }
         }
     }
@@ -237,11 +235,17 @@ pub fn despawn_game_screen(
     }
 }
 
-pub fn spawn_game_over_screen(mut commands: Commands) {
-    build_game_over_screen(&mut commands);
+pub fn spawn_game_over_screen(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+) {
+    build_game_over_screen(&mut commands, &asset_server);
 }
 
-pub fn build_game_over_screen(commands: &mut Commands) -> Entity {
+pub fn build_game_over_screen(
+    commands: &mut Commands,
+    asset_server: &Res<AssetServer>,
+) -> Entity {
     commands
         .spawn((
             // screen background
@@ -258,6 +262,40 @@ pub fn build_game_over_screen(commands: &mut Commands) -> Entity {
             },
             GameOver {},
         ))
+        .with_children(|parent| {
+            // box container for game over text
+            parent
+                .spawn(NodeBundle {
+                    style: Style {
+                        flex_direction: FlexDirection::Row,
+                        justify_content: JustifyContent::Center,
+                        align_items: AlignItems::Center,
+                        size: Size::new(Val::Px(300.0), Val::Px(120.0)),
+                        ..default()
+                    },
+                    background_color: Color::BLUE.into(),
+                    ..default()
+                })
+                .with_children(|parent| {
+                    // game over text
+                    parent.spawn(TextBundle {
+                        text: Text {
+                            sections: vec![TextSection::new(
+                                "Game Over!",
+                                TextStyle {
+                                    font: asset_server
+                                        .load("fonts/PressStart2P.ttf"),
+                                    font_size: 32.0,
+                                    color: Color::WHITE,
+                                },
+                            )],
+                            alignment: TextAlignment::Center,
+                            ..default()
+                        },
+                        ..default()
+                    });
+                });
+        })
         .id()
 }
 
