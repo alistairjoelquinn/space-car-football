@@ -1,4 +1,4 @@
-use bevy::prelude::*;
+use bevy::{app::AppExit, prelude::*};
 
 use crate::game::resources::AppState;
 
@@ -267,5 +267,18 @@ pub fn despawn_game_over_screen(
 ) {
     if let Ok(game_screen) = query.get_single() {
         commands.entity(game_screen).despawn_recursive();
+    }
+}
+
+pub fn detect_user_key_input(
+    keyboard_input: Res<Input<KeyCode>>,
+    mut next_game_state: ResMut<NextState<AppState>>,
+    mut app_exit_event_writer: EventWriter<AppExit>,
+) {
+    if keyboard_input.just_pressed(KeyCode::Q) {
+        next_game_state.set(AppState::GameOver);
+    }
+    if keyboard_input.just_pressed(KeyCode::Escape) {
+        app_exit_event_writer.send(AppExit);
     }
 }

@@ -28,6 +28,8 @@ impl Plugin for GamePlugin {
                 }),
                 ..default()
             }))
+            // global app related systems
+            .add_system(detect_user_key_input)
             // loading systems
             .add_systems((
                 spawn_loading_screen.in_schedule(OnEnter(AppState::Loading)),
@@ -47,6 +49,10 @@ impl Plugin for GamePlugin {
                 despawn_game_screen.in_schedule(OnExit(AppState::Running)),
             ))
             // game over systems
-            .add_systems(());
+            .add_systems((
+                spawn_game_over_screen.in_schedule(OnEnter(AppState::GameOver)),
+                despawn_game_over_screen
+                    .in_schedule(OnExit(AppState::GameOver)),
+            ));
     }
 }
