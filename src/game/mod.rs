@@ -41,12 +41,14 @@ impl Plugin for GamePlugin {
             // menu systems
             .add_systems((
                 spawn_menu_screen.in_schedule(OnEnter(AppState::Menu)),
+                play_menu_music.in_schedule(OnEnter(AppState::Menu)),
                 despawn_menu_screen.in_schedule(OnExit(AppState::Menu)),
                 click_play_button.run_if(in_state(AppState::Menu)),
             ))
             // game systems
             .add_systems((
                 spawn_game_screen.in_schedule(OnEnter(AppState::Running)),
+                handle_collision_sounds.run_if(in_state(AppState::Running)),
                 despawn_game_screen.in_schedule(OnExit(AppState::Running)),
             ))
             // game over systems

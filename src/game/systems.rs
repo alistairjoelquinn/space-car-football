@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use bevy::window::PrimaryWindow;
 use bevy::{asset::LoadState, prelude::*};
+use bevy_rapier2d::prelude::*;
 
 use super::resources::{AppState, GameAsset};
 
@@ -53,4 +54,21 @@ pub fn check_assets(
     }
 
     state.set(AppState::Menu);
+}
+
+pub fn handle_collision_sounds(
+    rapier_context: Res<RapierContext>,
+    audio: Res<Audio>,
+    asset_server: Res<AssetServer>,
+) {
+    let mut just_collided = false;
+    for pair in rapier_context.contact_pairs() {
+        if pair.has_any_active_contacts() {
+            just_collided = true;
+        }
+    }
+    if just_collided {
+        let sound = asset_server.load("impactGlass_heavy_002.ogg");
+        audio.play(sound);
+    }
 }

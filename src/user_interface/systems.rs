@@ -335,3 +335,7 @@ pub fn detect_user_key_input(
         app_exit_event_writer.send(AppExit);
     }
 }
+
+pub fn play_menu_music(audio: Res<Audio>, asset_server: Res<AssetServer>) {
+    audio.play(asset_server.load("audio/menu_music.ogg"));
+}
