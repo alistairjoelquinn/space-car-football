@@ -1,12 +1,10 @@
 use bevy::prelude::*;
 use bevy::window::PresentMode;
-use bevy_rapier2d::prelude::*;
 
 use car_football::ball::BallPlugin;
-use car_football::game::resources::{AppState, GameAsset};
-use car_football::game::systems::{
-    check_assets, load_assets, spawn_camera, spawn_set,
-};
+use car_football::game::resources::*;
+use car_football::game::systems::*;
+use car_football::physics::PhysicsPlugin;
 use car_football::player::systems::spawn_players;
 use car_football::player::PlayerPlugin;
 
@@ -26,12 +24,6 @@ fn main() {
             }),
             ..default()
         }))
-        .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(200.0))
-        .add_plugin(RapierDebugRenderPlugin::default())
-        .insert_resource(RapierConfiguration {
-            gravity: Vec2::ZERO,
-            ..Default::default()
-        })
         .add_startup_system(spawn_camera)
         .add_startup_system(spawn_set.before(spawn_players))
         .add_systems((
@@ -40,5 +32,6 @@ fn main() {
         ))
         .add_plugin(PlayerPlugin)
         .add_plugin(BallPlugin)
+        .add_plugin(PhysicsPlugin)
         .run();
 }

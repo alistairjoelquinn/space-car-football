@@ -11,5 +11,7 @@ pub struct GameAsset {
 pub enum AppState {
     #[default]
     Loading,
+    Menu,
     Running,
+    GameOver,
 }
