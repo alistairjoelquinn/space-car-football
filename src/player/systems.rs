@@ -2,7 +2,9 @@ use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
 use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
+use leafwing_input_manager::prelude::*;
 
+use crate::game::components::Action;
 use crate::game::resources::GameAsset;
 
 use super::components::Player;
@@ -51,7 +53,15 @@ pub fn spawn_players(
             linear_damping: 0.4,
             angular_damping: 0.2,
         })
-        .insert(ActiveEvents::COLLISION_EVENTS);
+        .insert(ActiveEvents::COLLISION_EVENTS)
+        .insert(InputManagerBundle::<Action> {
+            action_state: ActionState::default(),
+            input_map: InputMap::default()
+                .insert(DualAxis::left_stick(), Action::Move)
+                .insert(VirtualDPad::wasd(), Action::Move)
+                .set_gamepad(Gamepad { id: 1 })
+                .build(),
+        });
 
     let car_two_handle = game_assets.image_handles.get("car_two_handle");
     if car_two_handle.is_none() {
@@ -89,113 +99,121 @@ pub fn spawn_players(
             linear_damping: 0.4,
             angular_damping: 0.2,
         })
-        .insert(ActiveEvents::COLLISION_EVENTS);
+        .insert(ActiveEvents::COLLISION_EVENTS)
+        .insert(InputManagerBundle::<Action> {
+            action_state: ActionState::default(),
+            input_map: InputMap::default()
+                .insert(DualAxis::left_stick(), Action::Move)
+                .insert(VirtualDPad::arrow_keys(), Action::Move)
+                .set_gamepad(Gamepad { id: 2 })
+                .build(),
+        });
 }
 
-pub fn player_movement(
-    keyboard_input: Res<Input<KeyCode>>,
-    mut query: Query<(&mut Transform, &Player)>,
-    time: Res<Time>,
-) {
-    for (mut transform, player) in query.iter_mut() {
-        let mut direction = Vec3::ZERO;
-        let mut rotation = transform.rotation;
+// pub fn player_movement(
+//     keyboard_input: Res<Input<KeyCode>>,
+//     mut query: Query<(&mut Transform, &Player)>,
+//     time: Res<Time>,
+// ) {
+//     for (mut transform, player) in query.iter_mut() {
+//         let mut direction = Vec3::ZERO;
+//         let mut rotation = transform.rotation;
 
-        if player.id == 1 {
-            if keyboard_input.pressed(KeyCode::A) {
-                direction += Vec3::new(-1.0, 0.0, 0.0);
-                rotation = Quat::from_rotation_z(RIGHT);
-                if keyboard_input.pressed(KeyCode::W) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::S) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-            }
+//         if player.id == 1 {
+//             if keyboard_input.pressed(KeyCode::A) {
+//                 direction += Vec3::new(-1.0, 0.0, 0.0);
+//                 rotation = Quat::from_rotation_z(RIGHT);
+//                 if keyboard_input.pressed(KeyCode::W) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::S) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//             }
 
-            if keyboard_input.pressed(KeyCode::D) {
-                direction += Vec3::new(1.0, 0.0, 0.0);
-                rotation = Quat::from_rotation_z(RIGHT);
-                if keyboard_input.pressed(KeyCode::W) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::S) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-            }
+//             if keyboard_input.pressed(KeyCode::D) {
+//                 direction += Vec3::new(1.0, 0.0, 0.0);
+//                 rotation = Quat::from_rotation_z(RIGHT);
+//                 if keyboard_input.pressed(KeyCode::W) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::S) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//             }
 
-            if keyboard_input.pressed(KeyCode::W) {
-                direction += Vec3::new(0.0, 1.0, 0.0);
-                if keyboard_input.pressed(KeyCode::A) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::D) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-            }
+//             if keyboard_input.pressed(KeyCode::W) {
+//                 direction += Vec3::new(0.0, 1.0, 0.0);
+//                 if keyboard_input.pressed(KeyCode::A) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::D) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//             }
 
-            if keyboard_input.pressed(KeyCode::S) {
-                direction += Vec3::new(0.0, -1.0, 0.0);
-                if keyboard_input.pressed(KeyCode::D) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::A) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-            }
-        } else if player.id == 2 {
-            if keyboard_input.pressed(KeyCode::Left) {
-                direction += Vec3::new(-1.0, 0.0, 0.0);
-                rotation = Quat::from_rotation_z(RIGHT);
-                if keyboard_input.pressed(KeyCode::Up) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::Down) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-            }
+//             if keyboard_input.pressed(KeyCode::S) {
+//                 direction += Vec3::new(0.0, -1.0, 0.0);
+//                 if keyboard_input.pressed(KeyCode::D) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::A) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//             }
+//         } else if player.id == 2 {
+//             if keyboard_input.pressed(KeyCode::Left) {
+//                 direction += Vec3::new(-1.0, 0.0, 0.0);
+//                 rotation = Quat::from_rotation_z(RIGHT);
+//                 if keyboard_input.pressed(KeyCode::Up) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::Down) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//             }
 
-            if keyboard_input.pressed(KeyCode::Right) {
-                direction += Vec3::new(1.0, 0.0, 0.0);
-                rotation = Quat::from_rotation_z(RIGHT);
-                if keyboard_input.pressed(KeyCode::Up) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::Down) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-            }
+//             if keyboard_input.pressed(KeyCode::Right) {
+//                 direction += Vec3::new(1.0, 0.0, 0.0);
+//                 rotation = Quat::from_rotation_z(RIGHT);
+//                 if keyboard_input.pressed(KeyCode::Up) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::Down) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//             }
 
-            if keyboard_input.pressed(KeyCode::Up) {
-                direction += Vec3::new(0.0, 1.0, 0.0);
-                if keyboard_input.pressed(KeyCode::Left) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::Right) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-            }
+//             if keyboard_input.pressed(KeyCode::Up) {
+//                 direction += Vec3::new(0.0, 1.0, 0.0);
+//                 if keyboard_input.pressed(KeyCode::Left) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::Right) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//             }
 
-            if keyboard_input.pressed(KeyCode::Down) {
-                direction += Vec3::new(0.0, -1.0, 0.0);
-                if keyboard_input.pressed(KeyCode::Right) {
-                    rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
-                }
-                if keyboard_input.pressed(KeyCode::Left) {
-                    rotation = Quat::from_rotation_z(TOP_RIGHT);
-                }
-            }
-        }
+//             if keyboard_input.pressed(KeyCode::Down) {
+//                 direction += Vec3::new(0.0, -1.0, 0.0);
+//                 if keyboard_input.pressed(KeyCode::Right) {
+//                     rotation = Quat::from_rotation_z(BOTTOM_RIGHT);
+//                 }
+//                 if keyboard_input.pressed(KeyCode::Left) {
+//                     rotation = Quat::from_rotation_z(TOP_RIGHT);
+//                 }
+//             }
+//         }
 
-        if direction.length() > 0.0 {
-            direction = direction.normalize();
-        }
+//         if direction.length() > 0.0 {
+//             direction = direction.normalize();
+//         }
 
-        transform.translation +=
-            direction * PLAYER_SPEED * time.delta_seconds();
-        transform.rotation = rotation;
-    }
-}
+//         transform.translation +=
+//             direction * PLAYER_SPEED * time.delta_seconds();
+//         transform.rotation = rotation;
+//     }
+// }
 
 pub fn set_window_boundary(
     mut query: Query<&mut Transform, With<Player>>,

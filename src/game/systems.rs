@@ -68,7 +68,7 @@ pub fn handle_collision_sounds(
         }
     }
     if just_collided {
-        let sound = asset_server.load("impactGlass_heavy_002.ogg");
+        let sound = asset_server.load("audio/item_hit_2.ogg");
         audio.play(sound);
     }
 }

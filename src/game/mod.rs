@@ -4,11 +4,13 @@ pub mod systems;
 
 use bevy::prelude::*;
 use bevy::window::PresentMode;
+use leafwing_input_manager::prelude::*;
 
 use super::game::resources::*;
 use super::game::systems::*;
 use super::user_interface::systems::*;
 
+use components::Action;
 use resources::AppState;
 
 pub struct GamePlugin;
@@ -29,6 +31,7 @@ impl Plugin for GamePlugin {
                 }),
                 ..default()
             }))
+            .add_plugin(InputManagerPlugin::<Action>::default())
             // global app related systems
             .add_system(detect_user_key_input)
             // loading systems
