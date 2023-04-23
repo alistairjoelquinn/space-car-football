@@ -9,8 +9,7 @@ use leafwing_input_manager::prelude::*;
 use super::game::resources::*;
 use super::game::systems::*;
 use super::user_interface::systems::*;
-
-use components::Action;
+use crate::player::components::Action;
 use resources::AppState;
 
 pub struct GamePlugin;

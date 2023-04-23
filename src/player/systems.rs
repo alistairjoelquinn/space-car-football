@@ -4,11 +4,10 @@ use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 use leafwing_input_manager::prelude::*;
 
-use crate::game::components::Action;
-use crate::game::resources::GameAsset;
-
 use super::components::Player;
 use super::*;
+use crate::game::resources::GameAsset;
+use crate::player::components::Action;
 
 pub const PLAYER_SPEED: f32 = 300.0;
 
@@ -114,8 +113,6 @@ pub fn player_movement(
     mut query: Query<(&ActionState<Action>, &mut ExternalForce), With<Player>>,
     time: Res<Time>,
 ) {
-    let state = query.single();
-    println!("{:#?}", state);
     for (action_state, mut external_force) in query.iter_mut() {
         let axis_vector =
             action_state.clamped_axis_pair(Action::Move).unwrap().xy();
