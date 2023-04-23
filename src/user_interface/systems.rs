@@ -2,11 +2,18 @@ use bevy::prelude::*;
 
 use super::components::Loading;
 
-pub fn create_loading_screen(
+pub fn spawn_loading_screen(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+) {
+    build_loading_screen(&mut commands, &asset_server);
+}
+
+pub fn build_loading_screen(
     commands: &mut Commands,
     asset_server: &Res<AssetServer>,
 ) -> Entity {
-    commands
+    let loading_screen = commands
         .spawn((
             // screen background
             NodeBundle {
@@ -56,7 +63,17 @@ pub fn create_loading_screen(
                     });
                 });
         })
-        .id()
+        .id();
+    loading_screen
+}
+
+pub fn remove_loading_screen(
+    mut commands: Commands,
+    query: Query<Entity, With<Loading>>,
+) {
+    if let Ok(loading_screen) = query.get_single() {
+        commands.entity(loading_screen).despawn_recursive();
+    }
 }
 
 // pub mod create_menu_screen() {};

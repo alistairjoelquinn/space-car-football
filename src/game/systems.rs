@@ -52,6 +52,7 @@ pub fn load_assets(
     asset_server: Res<AssetServer>,
     mut game_assets: ResMut<GameAsset>,
 ) {
+    println!("Game is loading.........");
     game_assets.image_handles = HashMap::from([
         (
             "car_one_handle".into(),
@@ -74,8 +75,8 @@ pub fn check_assets(
     mut state: ResMut<NextState<AppState>>,
 ) {
     println!("Checking assets");
-    for h in game_assets.image_handles.values() {
-        if LoadState::Loaded != asset_server.get_load_state(h) {
+    for image_handle in game_assets.image_handles.values() {
+        if asset_server.get_load_state(image_handle) != LoadState::Loaded {
             return;
         }
     }

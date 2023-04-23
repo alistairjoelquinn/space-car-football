@@ -7,6 +7,7 @@ use bevy::window::PresentMode;
 use super::game::resources::*;
 use super::game::systems::*;
 use super::player::systems::spawn_players;
+use super::user_interface::systems::*;
 
 use resources::AppState;
 
@@ -15,6 +16,12 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<AppState>()
+            .add_system(
+                spawn_loading_screen.in_schedule(OnEnter(AppState::Loading)),
+            )
+            .add_system(
+                remove_loading_screen.in_schedule(OnExit(AppState::Loading)),
+            )
             .insert_resource(ClearColor(Color::DARK_GREEN))
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
