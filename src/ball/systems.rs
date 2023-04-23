@@ -18,7 +18,7 @@ pub fn spawn_ball(
                     translation: Vec3::new(
                         window.width() / 2.0,
                         window.height() / 2.0,
-                        0.0,
+                        10.0,
                     ),
                     scale: Vec3::splat(0.1),
                     ..default()

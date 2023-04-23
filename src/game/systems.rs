@@ -15,7 +15,7 @@ pub fn spawn_camera(
         transform: Transform::from_xyz(
             window.width() / 2.0,
             window.height() / 2.0,
-            0.0,
+            10.0,
         ),
         ..default()
     });

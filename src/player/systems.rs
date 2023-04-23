@@ -32,7 +32,7 @@ pub fn spawn_players(
             car_one_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(100.0, window.height() / 2.0, 0.0),
+                    translation: Vec3::new(100.0, window.height() / 2.0, 10.0),
                     rotation: Quat::from_rotation_z(RIGHT),
                     ..default()
                 },
@@ -69,7 +69,7 @@ pub fn spawn_players(
                     translation: Vec3::new(
                         window.width() - 100.0,
                         window.height() / 2.0,
-                        0.0,
+                        10.0,
                     ),
                     rotation: Quat::from_rotation_z(RIGHT),
                     ..default()

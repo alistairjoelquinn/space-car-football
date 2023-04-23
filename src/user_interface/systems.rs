@@ -225,6 +225,7 @@ pub fn build_game_screen(
                     window.height() / 2.0,
                     0.0,
                 ),
+
                 ..default()
             },
             texture: asset_server.load("sprites/space.png"),
