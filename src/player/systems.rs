@@ -108,6 +108,21 @@ pub fn spawn_players(
         });
 }
 
+const MOVE_FORCE: f32 = 1500.0;
+
+pub fn player_movement(
+    mut query: Query<(&ActionState<Action>, &mut ExternalForce), With<Player>>,
+    time: Res<Time>,
+) {
+    let state = query.single();
+    println!("{:#?}", state);
+    for (action_state, mut external_force) in query.iter_mut() {
+        let axis_vector =
+            action_state.clamped_axis_pair(Action::Move).unwrap().xy();
+        external_force.force = axis_vector * MOVE_FORCE * time.delta_seconds();
+    }
+}
+
 // pub fn player_movement(
 //     keyboard_input: Res<Input<KeyCode>>,
 //     mut query: Query<(&mut Transform, &Player)>,
