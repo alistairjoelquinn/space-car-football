@@ -39,6 +39,7 @@ impl Plugin for GamePlugin {
             .add_systems((
                 spawn_menu_screen.in_schedule(OnEnter(AppState::Menu)),
                 despawn_menu_screen.in_schedule(OnExit(AppState::Menu)),
+                click_play_button.run_if(in_state(AppState::Menu)),
             ))
             // game systems
             .add_systems((
