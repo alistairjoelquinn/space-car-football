@@ -107,8 +107,8 @@ pub fn build_menu_screen(
             parent
                 .spawn(NodeBundle {
                     style: Style {
-                        flex_direction: FlexDirection::Row,
-                        justify_content: JustifyContent::Center,
+                        flex_direction: FlexDirection::Column,
+                        justify_content: JustifyContent::SpaceEvenly,
                         align_items: AlignItems::Center,
                         size: Size::new(Val::Px(400.0), Val::Px(300.0)),
                         ..default()

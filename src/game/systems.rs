@@ -22,32 +22,6 @@ pub fn spawn_camera(
     });
 }
 
-pub fn spawn_set(mut commands: Commands, asset_server: Res<AssetServer>) {
-    build_set(&mut commands, &asset_server);
-}
-
-pub fn build_set(
-    commands: &mut Commands,
-    _asset_server: &Res<AssetServer>,
-) -> Entity {
-    let set = commands
-        .spawn(NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                justify_content: JustifyContent::Center,
-                align_items: AlignItems::Center,
-                size: Size::new(Val::Percent(90.0), Val::Percent(90.0)),
-                gap: Size::new(Val::Px(8.0), Val::Px(8.0)),
-                ..default()
-            },
-            background_color: Color::AZURE.into(),
-            z_index: ZIndex::Global(0),
-            ..default()
-        })
-        .id();
-    set
-}
-
 pub fn load_assets(
     asset_server: Res<AssetServer>,
     mut game_assets: ResMut<GameAsset>,
@@ -81,5 +55,5 @@ pub fn check_assets(
         }
     }
     println!("Assets loaded");
-    state.set(AppState::Running)
+    state.set(AppState::Menu)
 }
