@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::game::resources::AppState;
 
-use super::components::{GameOver, Loading, Menu, PlayButton, Running};
+use super::components::*;
 
 pub fn spawn_loading_screen(
     mut commands: Commands,
@@ -152,7 +152,7 @@ pub fn build_menu_screen(
                                 background_color: Color::BLACK.into(),
                                 ..default()
                             },
-                            Menu {},
+                            PlayButton {},
                         ))
                         .with_children(|parent| {
                             parent.spawn(TextBundle {
