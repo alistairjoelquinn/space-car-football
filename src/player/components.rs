@@ -7,6 +7,13 @@ pub struct Player {
     pub score: u32,
 }
 
+#[derive(Bundle)]
+pub struct PlayerBundle {
+    player: Player,
+    #[bundle]
+    input_manager: InputManagerBundle<Action>,
+}
+
 #[derive(Actionlike, PartialEq, Eq, Clone, Copy, Hash, Debug)]
 pub enum Action {
     Move,
