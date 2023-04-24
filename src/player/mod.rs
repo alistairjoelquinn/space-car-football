@@ -24,7 +24,6 @@ impl Plugin for PlayerPlugin {
         app.add_systems((
             spawn_players.in_schedule(OnExit(AppState::Menu)),
             player_movement.run_if(in_state(AppState::Running)),
-            set_window_boundary.run_if(in_state(AppState::Running)),
         ));
     }
 }
