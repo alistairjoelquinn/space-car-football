@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
+use bevy_rapier2d::dynamics::ExternalForce;
 use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 use leafwing_input_manager::prelude::*;
@@ -40,7 +41,6 @@ pub fn spawn_players(
                 texture: asset_server.load("sprites/car_one.png"),
                 ..default()
             },
-            Player { id: 1, score: 0 },
         ))
         .insert(RigidBody::Dynamic)
         .insert(ExternalForce {
@@ -59,68 +59,67 @@ pub fn spawn_players(
                 .set_gamepad(Gamepad { id: 1 })
                 .build(),
             ..default()
-        });
-
-    let car_two_handle = game_assets.image_handles.get("car_two_handle");
-    if car_two_handle.is_none() {
-        return;
-    }
-    let car_two_image = image_assets.get(car_two_handle.unwrap()).unwrap();
-    let car_two_collider =
-        single_convex_polyline_collider_translated(car_two_image).unwrap();
-
-    commands
-        .spawn((
-            car_two_collider,
-            SpriteBundle {
-                transform: Transform {
-                    translation: Vec3::new(
-                        window.width() - 100.0,
-                        window.height() / 2.0,
-                        10.0,
-                    ),
-                    rotation: Quat::from_rotation_z(RIGHT),
-                    ..default()
-                },
-                texture: asset_server.load("sprites/car_two.png"),
-                ..default()
-            },
-            Player { id: 2, score: 0 },
-        ))
-        .insert(RigidBody::Dynamic)
-        .insert(ExternalForce {
-            force: Vec2::ZERO,
-            torque: 0.0,
         })
-        .insert(Restitution::coefficient(0.2))
-        .insert(Damping {
-            linear_damping: 0.4,
-            angular_damping: 0.2,
-        })
-        .insert(ActiveEvents::COLLISION_EVENTS)
-        .insert(InputManagerBundle::<Action> {
-            input_map: InputMap::default()
-                .insert(VirtualDPad::arrow_keys(), Action::Move)
-                .set_gamepad(Gamepad { id: 2 })
-                .build(),
-            ..default()
-        });
+        .insert(Player { id: 1, score: 0 });
+
+    // let car_two_handle = game_assets.image_handles.get("car_two_handle");
+    // if car_two_handle.is_none() {
+    //     return;
+    // }
+    // let car_two_image = image_assets.get(car_two_handle.unwrap()).unwrap();
+    // let car_two_collider =
+    //     single_convex_polyline_collider_translated(car_two_image).unwrap();
+
+    // commands
+    //     .spawn((
+    //         car_two_collider,
+    //         SpriteBundle {
+    //             transform: Transform {
+    //                 translation: Vec3::new(
+    //                     window.width() - 100.0,
+    //                     window.height() / 2.0,
+    //                     10.0,
+    //                 ),
+    //                 rotation: Quat::from_rotation_z(RIGHT),
+    //                 ..default()
+    //             },
+    //             texture: asset_server.load("sprites/car_two.png"),
+    //             ..default()
+    //         },
+    //     ))
+    //     .insert(RigidBody::Dynamic)
+    //     .insert(ExternalForce {
+    //         force: Vec2::ZERO,
+    //         torque: 0.0,
+    //     })
+    //     .insert(Restitution::coefficient(0.2))
+    //     .insert(Damping {
+    //         linear_damping: 0.4,
+    //         angular_damping: 0.2,
+    //     })
+    //     .insert(ActiveEvents::COLLISION_EVENTS)
+    //     .insert(InputManagerBundle::<Action> {
+    //         input_map: InputMap::default()
+    //             .insert(VirtualDPad::arrow_keys(), Action::Move)
+    //             .set_gamepad(Gamepad { id: 2 })
+    //             .build(),
+    //         ..default()
+    //     })
+    //     .insert(Player { id: 2, score: 0 });
 }
 
-// const MOVE_FORCE: f32 = 1500.0;
+const MOVE_FORCE: f32 = 1500.0;
 
 // Query for the `ActionState` component in your game logic systems!
-pub fn player_movement(query: Query<&ActionState<Action>, With<Player>>) {
-    let action_state = query.single();
-    // If any button in a virtual direction pad is pressed, then the action state is "pressed"
+pub fn player_movement(
+    mut query: Query<(&ActionState<Action>, &mut ExternalForce), With<Player>>,
+    time: Res<Time>,
+) {
+    let (action_state, mut external_force) = query.single_mut();
     if action_state.pressed(Action::Move) {
-        // Virtual direction pads are one of the types which return a DualAxis. The values will be
-        // represented as `-1.0`, `0.0`, or `1.0` depending on the combination of buttons pressed.
-        let axis_pair = action_state.axis_pair(Action::Move).unwrap();
-        println!("Move:");
-        println!("   distance: {}", axis_pair.length());
-        println!("          x: {}", axis_pair.x());
-        println!("          y: {}", axis_pair.y());
+        let axis_vector =
+            action_state.clamped_axis_pair(Action::Move).unwrap().xy();
+        external_force.force = axis_vector * MOVE_FORCE * time.delta_seconds();
     }
 }
 

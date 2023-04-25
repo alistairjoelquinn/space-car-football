@@ -234,7 +234,7 @@ pub fn build_game_screen(
 
                 ..default()
             },
-            texture: asset_server.load("sprites/space.png"),
+            texture: asset_server.load("sprites/space/space.png"),
             ..default()
         },
         Background {},
