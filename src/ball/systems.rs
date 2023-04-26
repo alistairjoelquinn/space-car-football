@@ -36,8 +36,8 @@ pub fn spawn_ball(
         })
         .insert(Restitution::coefficient(1.0))
         .insert(Damping {
-            linear_damping: 0.6,
-            angular_damping: 0.3,
+            linear_damping: 0.2,
+            angular_damping: 0.2,
         })
         .insert(ActiveEvents::COLLISION_EVENTS);
 }
