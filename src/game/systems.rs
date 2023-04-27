@@ -63,6 +63,14 @@ pub fn load_assets(
             "space_station_small_handle".into(),
             asset_server.load("sprites/space/space_station_small.png"),
         ),
+        (
+            "grey_block_handle".into(),
+            asset_server.load("sprites/space/grey_block.png"),
+        ),
+        (
+            "red_dot_handle".into(),
+            asset_server.load("sprites/space/red_dot.png"),
+        ),
     ]);
 }
 
