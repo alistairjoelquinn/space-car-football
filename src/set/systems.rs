@@ -12,28 +12,28 @@ pub fn spawn_space_barriers(
     // barriers which set on the edges of the game screen
     create_space_barrier(
         &mut commands,
-        Vec3::new(window.width() / 2., window.height(), 9.),
+        Vec3::new(window.width() / 2., window.height() + 5., 9.),
         Vec2::new(window.width(), 10.),
         window.width(),
         5.,
     );
     create_space_barrier(
         &mut commands,
-        Vec3::new(window.width() / 2., 0., 9.),
+        Vec3::new(window.width() / 2., -5., 9.),
         Vec2::new(window.width(), 10.),
         window.width(),
         5.,
     );
     create_space_barrier(
         &mut commands,
-        Vec3::new(0., window.height() / 2., 9.),
+        Vec3::new(-5., window.height() / 2., 9.),
         Vec2::new(10., window.height()),
         5.,
         window.height(),
     );
     create_space_barrier(
         &mut commands,
-        Vec3::new(window.width(), window.height() / 2., 9.),
+        Vec3::new(window.width() + 5., window.height() / 2., 9.),
         Vec2::new(10., window.height()),
         5.,
         window.height(),
@@ -66,4 +66,10 @@ fn create_space_barrier(
         .insert(Collider::cuboid(collider_x, collider_y))
         .insert(RigidBody::Fixed)
         .insert(Restitution::coefficient(1.0));
+}
+
+pub fn spawn_obstacles(
+    mut commands: Commands,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+) {
 }
