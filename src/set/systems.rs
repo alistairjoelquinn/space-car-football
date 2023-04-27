@@ -79,31 +79,6 @@ pub fn spawn_obstacles(
     game_assets: &Res<GameAsset>,
     image_assets: &Res<Assets<Image>>,
 ) {
-    // spawn meteor
-    let meteor_handle = game_assets.image_handles.get("meteor_handle");
-    if meteor_handle.is_none() {
-        return;
-    }
-    let meteor_image = image_assets.get(meteor_handle.unwrap()).unwrap();
-    let meteor_collider =
-        single_convex_polyline_collider_translated(meteor_image).unwrap();
-
-    commands
-        .spawn((
-            meteor_collider,
-            SpriteBundle {
-                transform: Transform {
-                    translation: Vec3::new(400.0, 200.0, 10.0),
-                    rotation: Quat::from_rotation_z(RIGHT),
-                    scale: Vec3::splat(0.6),
-                    ..default()
-                },
-                texture: asset_server.load("sprites/space/meteor_1.png"),
-                ..default()
-            },
-        ))
-        .insert(RigidBody::Fixed);
-
     // spawn space station
     let space_station_large_handle =
         game_assets.image_handles.get("space_station_large_handle");
@@ -204,6 +179,30 @@ pub fn spawn_obstacles(
                     ..default()
                 },
                 texture: asset_server.load("sprites/space/red_dot.png"),
+                ..default()
+            },
+        ))
+        .insert(RigidBody::Fixed);
+
+    // spawn robot
+    let robot_handle = game_assets.image_handles.get("robot_handle");
+    if robot_handle.is_none() {
+        return;
+    }
+    let robot_image = image_assets.get(robot_handle.unwrap()).unwrap();
+    let robot_collider =
+        single_convex_polyline_collider_translated(robot_image).unwrap();
+
+    commands
+        .spawn((
+            robot_collider,
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(400.0, 250.0, 10.0),
+                    scale: Vec3::splat(1.),
+                    ..default()
+                },
+                texture: asset_server.load("sprites/space/robot.png"),
                 ..default()
             },
         ))
