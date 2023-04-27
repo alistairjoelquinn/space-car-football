@@ -1,7 +1,7 @@
 use bevy::{app::AppExit, prelude::*, window::PrimaryWindow};
 
 use crate::{
-    game::resources::AppState,
+    game::resources::{AppState, GameAsset},
     set::{
         components::Background,
         systems::{spawn_obstacles, spawn_space_barriers},
@@ -213,12 +213,14 @@ pub fn spawn_game_screen(
     mut commands: Commands,
     window_query: Query<&Window, With<PrimaryWindow>>,
     asset_server: Res<AssetServer>,
+    game_assets: Res<GameAsset>,
+    image_assets: Res<Assets<Image>>,
 ) {
     build_game_screen(&mut commands, &window_query, &asset_server);
 
     spawn_space_barriers(&mut commands, &window_query);
 
-    spawn_obstacles(&mut commands, &window_query);
+    spawn_obstacles(&mut commands, &asset_server, &game_assets, &image_assets);
 }
 
 pub fn build_game_screen(
