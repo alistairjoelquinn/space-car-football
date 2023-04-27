@@ -216,9 +216,9 @@ pub fn spawn_game_screen(
 ) {
     build_game_screen(&mut commands, &window_query, &asset_server);
 
-    spawn_space_barriers(commands, window_query);
+    spawn_space_barriers(&mut commands, &window_query);
 
-    spawn_obstacles(commands, window_query);
+    spawn_obstacles(&mut commands, &window_query);
 }
 
 pub fn build_game_screen(

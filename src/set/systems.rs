@@ -4,35 +4,35 @@ use bevy_rapier2d::prelude::*;
 use super::components::SpaceBarrier;
 
 pub fn spawn_space_barriers(
-    mut commands: Commands,
-    window_query: Query<&Window, With<PrimaryWindow>>,
+    commands: &mut Commands,
+    window_query: &Query<&Window, With<PrimaryWindow>>,
 ) {
     let window = window_query.get_single().unwrap();
 
     // barriers which set on the edges of the game screen
     create_space_barrier(
-        &mut commands,
+        commands,
         Vec3::new(window.width() / 2., window.height() + 5., 9.),
         Vec2::new(window.width(), 10.),
         window.width(),
         5.,
     );
     create_space_barrier(
-        &mut commands,
+        commands,
         Vec3::new(window.width() / 2., -5., 9.),
         Vec2::new(window.width(), 10.),
         window.width(),
         5.,
     );
     create_space_barrier(
-        &mut commands,
+        commands,
         Vec3::new(-5., window.height() / 2., 9.),
         Vec2::new(10., window.height()),
         5.,
         window.height(),
     );
     create_space_barrier(
-        &mut commands,
+        commands,
         Vec3::new(window.width() + 5., window.height() / 2., 9.),
         Vec2::new(10., window.height()),
         5.,
@@ -69,7 +69,7 @@ fn create_space_barrier(
 }
 
 pub fn spawn_obstacles(
-    mut commands: Commands,
-    window_query: Query<&Window, With<PrimaryWindow>>,
+    commands: &mut Commands,
+    window_query: &Query<&Window, With<PrimaryWindow>>,
 ) {
 }
