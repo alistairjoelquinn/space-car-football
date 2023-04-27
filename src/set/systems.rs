@@ -1,4 +1,4 @@
-use std::f32::consts::{FRAC_PI_2, PI};
+use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
 
 use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_rapier2d::prelude::*;
@@ -134,7 +134,7 @@ pub fn spawn_obstacles(
         ))
         .insert(RigidBody::Fixed);
 
-    // spawn meteor
+    // spawn rocket
     let rocket_3_handle = game_assets.image_handles.get("rocket_3_handle");
     if rocket_3_handle.is_none() {
         return;
@@ -154,6 +154,56 @@ pub fn spawn_obstacles(
                     ..default()
                 },
                 texture: asset_server.load("sprites/space/rocket_3.png"),
+                ..default()
+            },
+        ))
+        .insert(RigidBody::Fixed);
+
+    // spawn grey block
+    let grey_block_handle = game_assets.image_handles.get("grey_block_handle");
+    if grey_block_handle.is_none() {
+        return;
+    }
+    let grey_block_image =
+        image_assets.get(grey_block_handle.unwrap()).unwrap();
+    let grey_block_collider =
+        single_convex_polyline_collider_translated(grey_block_image).unwrap();
+
+    commands
+        .spawn((
+            grey_block_collider,
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(900.0, 250.0, 10.0),
+                    rotation: Quat::from_rotation_z(PI + FRAC_PI_4),
+                    scale: Vec3::splat(1.6),
+                    ..default()
+                },
+                texture: asset_server.load("sprites/space/grey_block.png"),
+                ..default()
+            },
+        ))
+        .insert(RigidBody::Fixed);
+
+    // spawn red dot
+    let red_dot_handle = game_assets.image_handles.get("red_dot_handle");
+    if red_dot_handle.is_none() {
+        return;
+    }
+    let red_dot_image = image_assets.get(red_dot_handle.unwrap()).unwrap();
+    let red_dot_collider =
+        single_convex_polyline_collider_translated(red_dot_image).unwrap();
+
+    commands
+        .spawn((
+            red_dot_collider,
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(250.0, 550.0, 10.0),
+                    scale: Vec3::splat(2.),
+                    ..default()
+                },
+                texture: asset_server.load("sprites/space/red_dot.png"),
                 ..default()
             },
         ))
