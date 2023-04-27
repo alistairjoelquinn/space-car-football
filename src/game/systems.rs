@@ -39,6 +39,30 @@ pub fn load_assets(
             "ball_handle".into(),
             asset_server.load("sprites/football.png"),
         ),
+        (
+            "meteor_handle".into(),
+            asset_server.load("sprites/space/meteor_1.png"),
+        ),
+        (
+            "earth_handle".into(),
+            asset_server.load("sprites/space/planet_1.png"),
+        ),
+        (
+            "robot_handle".into(),
+            asset_server.load("sprites/space/robot.png"),
+        ),
+        (
+            "rocket_3_handle".into(),
+            asset_server.load("sprites/space/rocket_3.png"),
+        ),
+        (
+            "space_station_large_handle".into(),
+            asset_server.load("sprites/space/space_station_large.png"),
+        ),
+        (
+            "space_station_small_handle".into(),
+            asset_server.load("sprites/space/space_station_small.png"),
+        ),
     ]);
 }
 
