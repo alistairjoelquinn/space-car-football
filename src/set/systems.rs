@@ -75,13 +75,10 @@ fn create_space_barrier(
 
 pub fn spawn_obstacles(
     commands: &mut Commands,
-    window_query: &Query<&Window, With<PrimaryWindow>>,
     asset_server: &Res<AssetServer>,
     game_assets: &Res<GameAsset>,
     image_assets: &Res<Assets<Image>>,
 ) {
-    let window = window_query.get_single().unwrap();
-
     // spawn space station
     let space_station_large_handle =
         game_assets.image_handles.get("space_station_large_handle");
@@ -219,7 +216,7 @@ pub fn spawn_obstacles(
         z: f32,
     }
 
-    for index in 0..=2 {
+    for index in 1..=3 {
         let meteor_1_handle = game_assets.image_handles.get("meteor_1_handle");
         if meteor_1_handle.is_none() {
             return;
@@ -230,8 +227,8 @@ pub fn spawn_obstacles(
             single_convex_polyline_collider_translated(meteor_1_image).unwrap();
 
         let coords = Coords {
-            x: (window.width() + 100.) - (window.width() / index as f32),
-            y: 350. - (index as f32 * 175.),
+            x: 0. + (index as f32 * 275.),
+            y: 700. - (index as f32 * 175.),
             z: 10.,
         };
 

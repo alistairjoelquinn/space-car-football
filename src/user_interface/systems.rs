@@ -220,13 +220,7 @@ pub fn spawn_game_screen(
 
     spawn_space_barriers(&mut commands, &window_query);
 
-    spawn_obstacles(
-        &mut commands,
-        &window_query,
-        &asset_server,
-        &game_assets,
-        &image_assets,
-    );
+    spawn_obstacles(&mut commands, &asset_server, &game_assets, &image_assets);
 }
 
 pub fn build_game_screen(
