@@ -13,7 +13,7 @@ pub struct Meteor {
     pub z: f32,
 }
 
-#[derive(Component)]
+#[derive(Component, Debug)]
 pub struct Goal {
     pub user_id: u32,
 }

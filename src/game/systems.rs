@@ -109,11 +109,13 @@ pub fn handle_collision_sounds(
 
 pub fn handle_user_score(
     rapier_context: Res<RapierContext>,
-    goal_query: Query<(Entity, &Goal)>,
     ball_query: Query<Entity, With<Ball>>,
+    goal_query: Query<(Entity, &Goal)>,
 ) {
     let ball_entity = ball_query.single();
+
     for (goal_entity, goal) in goal_query.iter() {
+        println!("Goal: {:?}", goal);
         if rapier_context.intersection_pair(goal_entity, ball_entity)
             == Some(true)
         {
