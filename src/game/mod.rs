@@ -49,6 +49,7 @@ impl Plugin for GamePlugin {
                 spawn_game_screen.in_schedule(OnEnter(AppState::Running)),
                 set_meteor_window_boundary.run_if(in_state(AppState::Running)),
                 handle_collision_sounds.run_if(in_state(AppState::Running)),
+                handle_user_score.run_if(in_state(AppState::Running)),
                 despawn_game_screen.in_schedule(OnExit(AppState::Running)),
                 // game over systems
                 spawn_game_over_screen.in_schedule(OnEnter(AppState::GameOver)),

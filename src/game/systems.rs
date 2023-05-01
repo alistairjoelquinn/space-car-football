@@ -4,6 +4,10 @@ use bevy::window::PrimaryWindow;
 use bevy::{asset::LoadState, prelude::*};
 use bevy_rapier2d::prelude::*;
 
+use crate::ball::components::Ball;
+use crate::player::components::Player;
+use crate::set::components::Goal;
+
 use super::resources::{AppState, GameAsset};
 
 pub fn spawn_camera(
@@ -102,5 +106,20 @@ pub fn handle_collision_sounds(
     if just_collided {
         let sound = asset_server.load("audio/item_hit_2.ogg");
         audio.play(sound);
+    }
+}
+
+pub fn handle_user_score(
+    rapier_context: Res<RapierContext>,
+    goal_query: Query<(Entity, &Goal)>,
+    ball_query: Query<Entity, With<Ball>>,
+) {
+    let ball_entity = ball_query.single();
+    for (goal_entity, goal) in goal_query.iter() {
+        if rapier_context.intersection_pair(goal_entity, ball_entity)
+            == Some(true)
+        {
+            println!("Player {} just conceded a point", goal.user_id);
+        }
     }
 }

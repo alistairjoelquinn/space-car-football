@@ -296,6 +296,7 @@ pub fn spawn_goals(
             },
             Goal { user_id: 1 },
         ))
+        .insert(ActiveEvents::COLLISION_EVENTS)
         .insert(Collider::cuboid(10., 50.))
         .insert(RigidBody::Fixed)
         .insert(Restitution::coefficient(1.0));
@@ -321,6 +322,7 @@ pub fn spawn_goals(
             },
             Goal { user_id: 2 },
         ))
+        .insert(ActiveEvents::COLLISION_EVENTS)
         .insert(Collider::cuboid(10., 50.))
         .insert(RigidBody::Fixed)
         .insert(Restitution::coefficient(1.0));
