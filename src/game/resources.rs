@@ -15,3 +15,16 @@ pub enum AppState {
     Running,
     GameOver,
 }
+
+#[derive(Resource)]
+pub struct GameTimer {
+    pub timer: Timer,
+}
+
+impl Default for GameTimer {
+    fn default() -> Self {
+        Self {
+            timer: Timer::from_seconds(5., TimerMode::Repeating),
+        }
+    }
+}

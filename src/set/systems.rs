@@ -9,8 +9,6 @@ use crate::game::resources::GameAsset;
 use crate::player::RIGHT;
 use crate::set::components::{Goal, Meteor, SpaceBarrier};
 
-use super::resources::GoalColorTimer;
-
 pub fn spawn_space_barriers(
     commands: &mut Commands,
     window_query: &Query<&Window, With<PrimaryWindow>>,
@@ -337,16 +335,14 @@ pub fn handle_goal_color(
     rapier_context: Res<RapierContext>,
     mut goal_query: Query<(Entity, &mut Sprite), With<Goal>>,
     ball_query: Query<Entity, With<Ball>>,
-    mut goal_color_timer: ResMut<GoalColorTimer>,
-    time: Res<Time>,
 ) {
     let ball = ball_query.single();
 
     for (goal, mut sprite) in goal_query.iter_mut() {
-        println!("goal: {:?}", goal);
         if rapier_context.intersection_pair(goal, ball) == Some(true) {
             sprite.color = Color::GREEN;
-            goal_color_timer.timer.tick(time.delta());
+        } else {
+            sprite.color = Color::rgb(150., 15., 56.);
         }
     }
 }

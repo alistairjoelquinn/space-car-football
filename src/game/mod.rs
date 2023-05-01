@@ -10,7 +10,6 @@ use super::game::resources::*;
 use super::game::systems::*;
 use super::user_interface::systems::*;
 use crate::player::components::Action;
-use crate::set::resources::GoalColorTimer;
 use crate::set::systems::*;
 use resources::AppState;
 
@@ -20,7 +19,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<AppState>()
             .add_startup_system(spawn_camera)
-            .init_resource::<GoalColorTimer>()
+            .init_resource::<GameTimer>()
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
