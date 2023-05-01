@@ -1,14 +1,9 @@
 use bevy::{app::AppExit, prelude::*, window::PrimaryWindow};
 
-use crate::{
-    game::resources::{AppState, GameAsset},
-    set::{
-        components::Background,
-        systems::{spawn_obstacles, spawn_space_barriers},
-    },
-};
-
-use super::components::*;
+use crate::game::resources::{AppState, GameAsset};
+use crate::set::components::Background;
+use crate::set::systems::{spawn_goals, spawn_obstacles, spawn_space_barriers};
+use crate::user_interface::components::*;
 
 pub fn spawn_loading_screen(
     mut commands: Commands,
@@ -221,6 +216,8 @@ pub fn spawn_game_screen(
     spawn_space_barriers(&mut commands, &window_query);
 
     spawn_obstacles(&mut commands, &asset_server, &game_assets, &image_assets);
+
+    spawn_goals(&mut commands, &window_query);
 }
 
 pub fn build_game_screen(

@@ -4,11 +4,9 @@ use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
-use crate::{
-    game::resources::GameAsset, player::RIGHT, set::components::Meteor,
-};
-
-use super::components::SpaceBarrier;
+use crate::game::resources::GameAsset;
+use crate::player::RIGHT;
+use crate::set::components::{Goal, Meteor, SpaceBarrier};
 
 pub fn spawn_space_barriers(
     commands: &mut Commands,
@@ -273,4 +271,44 @@ pub fn set_meteor_window_boundary(
 
         transform.translation = translation;
     }
+}
+
+pub fn spawn_goals(
+    commands: &mut Commands,
+    window_query: &Query<&Window, With<PrimaryWindow>>,
+) {
+    let window = window_query.get_single().unwrap();
+
+    // goal for user 1
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform {
+                translation: Vec3::new(
+                    window.width() / 2.0,
+                    window.height() / 2.0,
+                    0.0,
+                ),
+
+                ..default()
+            },
+            ..default()
+        },
+        Goal { userId: 1 },
+    ));
+
+    // goal for user 2
+    commands.spawn((
+        SpriteBundle {
+            transform: Transform {
+                translation: Vec3::new(
+                    window.width() / 2.0,
+                    window.height() / 2.0,
+                    0.0,
+                ),
+                ..default()
+            },
+            ..default()
+        },
+        Goal { userId: 1 },
+    ));
 }
