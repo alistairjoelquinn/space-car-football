@@ -44,12 +44,10 @@ pub fn spawn_ball(
 
 pub fn reset_ball_location(
     window_query: &Query<&Window, With<PrimaryWindow>>,
-    ball_query: &mut Query<&mut Transform, With<Ball>>,
+    ball_transform: &mut Transform,
 ) {
-    if let Ok(mut ball_transform) = ball_query.get_single_mut() {
-        let window = window_query.get_single().unwrap();
+    let window = window_query.get_single().unwrap();
 
-        ball_transform.translation =
-            Vec3::new(window.width() / 2.0, window.height() / 2.0, 10.0);
-    }
+    ball_transform.translation =
+        Vec3::new(window.width() / 2.0, window.height() / 2.0, 10.0);
 }

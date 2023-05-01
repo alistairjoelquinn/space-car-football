@@ -5,7 +5,7 @@ use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
 use crate::ball::components::Ball;
-use crate::game::resources::GameAsset;
+use crate::game::resources::{GameAsset, GameTimer};
 use crate::player::RIGHT;
 use crate::set::components::{Goal, Meteor, SpaceBarrier};
 
@@ -335,14 +335,26 @@ pub fn handle_goal_color(
     rapier_context: Res<RapierContext>,
     mut goal_query: Query<(Entity, &mut Sprite), With<Goal>>,
     ball_query: Query<Entity, With<Ball>>,
+    mut game_timer: ResMut<GameTimer>,
+    time: Res<Time>,
 ) {
     let ball = ball_query.single();
 
+    let mut goal_is_green = false;
+
+    if goal_is_green == true {
+        if game_timer.timer.finished() {
+            goal_is_green = false;
+        } else {
+            game_timer.timer.tick(time.delta());
+        }
+    }
+
     for (goal, mut sprite) in goal_query.iter_mut() {
         if rapier_context.intersection_pair(goal, ball) == Some(true) {
+            println!("Goal!");
             sprite.color = Color::GREEN;
-        } else {
-            sprite.color = Color::rgb(150., 15., 56.);
+            goal_is_green = true;
         }
     }
 }
