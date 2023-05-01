@@ -207,4 +207,28 @@ pub fn spawn_obstacles(
             },
         ))
         .insert(RigidBody::Fixed);
+
+    // spawn meteor
+    let meteor_1_handle = game_assets.image_handles.get("meteor_1_handle");
+    if meteor_1_handle.is_none() {
+        return;
+    }
+    let meteor_1_image = image_assets.get(meteor_1_handle.unwrap()).unwrap();
+    let meteor_1_collider =
+        single_convex_polyline_collider_translated(meteor_1_image).unwrap();
+
+    commands
+        .spawn((
+            meteor_1_collider,
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(100.0, 350.0, 10.0),
+                    scale: Vec3::splat(0.5),
+                    ..default()
+                },
+                texture: asset_server.load("sprites/space/meteor_1.png"),
+                ..default()
+            },
+        ))
+        .insert(RigidBody::Dynamic);
 }

@@ -40,7 +40,7 @@ pub fn load_assets(
             asset_server.load("sprites/football.png"),
         ),
         (
-            "meteor_handle".into(),
+            "meteor_1_handle".into(),
             asset_server.load("sprites/space/meteor_1.png"),
         ),
         (
