@@ -10,6 +10,7 @@ use super::game::resources::*;
 use super::game::systems::*;
 use super::user_interface::systems::*;
 use crate::player::components::Action;
+use crate::set::systems::set_meteor_window_boundary;
 use resources::AppState;
 
 pub struct GamePlugin;
@@ -47,6 +48,7 @@ impl Plugin for GamePlugin {
                 // game systems
                 spawn_game_screen.in_schedule(OnEnter(AppState::Running)),
                 handle_collision_sounds.run_if(in_state(AppState::Running)),
+                set_meteor_window_boundary.run_if(in_state(AppState::Running)),
                 despawn_game_screen.in_schedule(OnExit(AppState::Running)),
                 // game over systems
                 spawn_game_over_screen.in_schedule(OnEnter(AppState::GameOver)),

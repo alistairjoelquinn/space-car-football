@@ -244,3 +244,33 @@ pub fn spawn_obstacles(
             .insert(RigidBody::Dynamic);
     }
 }
+
+pub fn set_meteor_window_boundary(
+    mut query: Query<&mut Transform, With<Meteor>>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
+) {
+    for mut transform in query.iter_mut() {
+        let window = window_query.get_single().unwrap();
+
+        let x_min = 35.;
+        let x_max = window.width() - 35.;
+        let y_min = 35.;
+        let y_max = window.height() - 35.;
+
+        let mut translation = transform.translation;
+
+        if translation.x < x_min {
+            translation.x = x_min;
+        } else if translation.x > x_max {
+            translation.x = x_max;
+        }
+
+        if translation.y < y_min {
+            translation.y = y_min;
+        } else if translation.y > y_max {
+            translation.y = y_max;
+        }
+
+        transform.translation = translation;
+    }
+}
