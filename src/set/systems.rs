@@ -75,10 +75,13 @@ fn create_space_barrier(
 
 pub fn spawn_obstacles(
     commands: &mut Commands,
+    window_query: &Query<&Window, With<PrimaryWindow>>,
     asset_server: &Res<AssetServer>,
     game_assets: &Res<GameAsset>,
     image_assets: &Res<Assets<Image>>,
 ) {
+    let window = window_query.get_single().unwrap();
+
     // spawn space station
     let space_station_large_handle =
         game_assets.image_handles.get("space_station_large_handle");
@@ -208,27 +211,45 @@ pub fn spawn_obstacles(
         ))
         .insert(RigidBody::Fixed);
 
-    // spawn meteor
-    let meteor_1_handle = game_assets.image_handles.get("meteor_1_handle");
-    if meteor_1_handle.is_none() {
-        return;
+    // spawn meteors
+    #[derive(Debug)]
+    struct Coords {
+        x: f32,
+        y: f32,
+        z: f32,
     }
-    let meteor_1_image = image_assets.get(meteor_1_handle.unwrap()).unwrap();
-    let meteor_1_collider =
-        single_convex_polyline_collider_translated(meteor_1_image).unwrap();
 
-    commands
-        .spawn((
-            meteor_1_collider,
-            SpriteBundle {
-                transform: Transform {
-                    translation: Vec3::new(100.0, 350.0, 10.0),
-                    scale: Vec3::splat(0.5),
+    for index in 0..=2 {
+        let meteor_1_handle = game_assets.image_handles.get("meteor_1_handle");
+        if meteor_1_handle.is_none() {
+            return;
+        }
+        let meteor_1_image =
+            image_assets.get(meteor_1_handle.unwrap()).unwrap();
+        let meteor_1_collider =
+            single_convex_polyline_collider_translated(meteor_1_image).unwrap();
+
+        let coords = Coords {
+            x: (window.width() + 100.) - (window.width() / index as f32),
+            y: 350. - (index as f32 * 175.),
+            z: 10.,
+        };
+
+        println!("coords: {:?}, for index {}", coords, index);
+
+        commands
+            .spawn((
+                meteor_1_collider,
+                SpriteBundle {
+                    transform: Transform {
+                        translation: Vec3::new(coords.x, coords.y, coords.z),
+                        scale: Vec3::splat(0.5),
+                        ..default()
+                    },
+                    texture: asset_server.load("sprites/space/meteor_1.png"),
                     ..default()
                 },
-                texture: asset_server.load("sprites/space/meteor_1.png"),
-                ..default()
-            },
-        ))
-        .insert(RigidBody::Dynamic);
+            ))
+            .insert(RigidBody::Dynamic);
+    }
 }
