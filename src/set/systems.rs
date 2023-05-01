@@ -4,7 +4,9 @@ use bevy::{prelude::*, window::PrimaryWindow};
 use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
-use crate::{game::resources::GameAsset, player::RIGHT};
+use crate::{
+    game::resources::GameAsset, player::RIGHT, set::components::Meteor,
+};
 
 use super::components::SpaceBarrier;
 
@@ -209,13 +211,6 @@ pub fn spawn_obstacles(
         .insert(RigidBody::Fixed);
 
     // spawn meteors
-    #[derive(Debug)]
-    struct Coords {
-        x: f32,
-        y: f32,
-        z: f32,
-    }
-
     for index in 1..=3 {
         let meteor_1_handle = game_assets.image_handles.get("meteor_1_handle");
         if meteor_1_handle.is_none() {
@@ -226,26 +221,25 @@ pub fn spawn_obstacles(
         let meteor_1_collider =
             single_convex_polyline_collider_translated(meteor_1_image).unwrap();
 
-        let coords = Coords {
+        let meteor = Meteor {
             x: 0. + (index as f32 * 300.),
             y: 700. - (index as f32 * 200.),
             z: 10.,
         };
-
-        println!("coords: {:?}, for index {}", coords, index);
 
         commands
             .spawn((
                 meteor_1_collider,
                 SpriteBundle {
                     transform: Transform {
-                        translation: Vec3::new(coords.x, coords.y, coords.z),
+                        translation: Vec3::new(meteor.x, meteor.y, meteor.z),
                         scale: Vec3::splat(0.4),
                         ..default()
                     },
                     texture: asset_server.load("sprites/space/meteor_1.png"),
                     ..default()
                 },
+                meteor,
             ))
             .insert(RigidBody::Dynamic);
     }
