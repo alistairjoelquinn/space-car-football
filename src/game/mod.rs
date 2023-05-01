@@ -10,7 +10,8 @@ use super::game::resources::*;
 use super::game::systems::*;
 use super::user_interface::systems::*;
 use crate::player::components::Action;
-use crate::set::systems::set_meteor_window_boundary;
+use crate::set::resources::GoalColorTimer;
+use crate::set::systems::*;
 use resources::AppState;
 
 pub struct GamePlugin;
@@ -19,6 +20,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<AppState>()
             .add_startup_system(spawn_camera)
+            .init_resource::<GoalColorTimer>()
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
@@ -47,14 +49,15 @@ impl Plugin for GamePlugin {
                 click_play_button.run_if(in_state(AppState::Menu)),
                 // game systems
                 spawn_game_screen.in_schedule(OnEnter(AppState::Running)),
+                despawn_game_screen.in_schedule(OnExit(AppState::Running)),
                 set_meteor_window_boundary.run_if(in_state(AppState::Running)),
                 handle_collision_sounds.run_if(in_state(AppState::Running)),
                 handle_user_score.run_if(in_state(AppState::Running)),
-                despawn_game_screen.in_schedule(OnExit(AppState::Running)),
                 // game over systems
                 spawn_game_over_screen.in_schedule(OnEnter(AppState::GameOver)),
                 despawn_game_over_screen
                     .in_schedule(OnExit(AppState::GameOver)),
-            ));
+            ))
+            .add_system(handle_goal_color.run_if(in_state(AppState::Running)));
     }
 }

@@ -5,6 +5,7 @@ use bevy::{asset::LoadState, prelude::*};
 use bevy_rapier2d::prelude::*;
 
 use crate::ball::components::Ball;
+use crate::ball::systems::reset_ball_location;
 use crate::game::resources::{AppState, GameAsset};
 use crate::player::components::Player;
 use crate::set::components::Goal;
@@ -110,9 +111,11 @@ pub fn handle_collision_sounds(
 
 pub fn handle_user_score(
     rapier_context: Res<RapierContext>,
+    window_query: Query<&Window, With<PrimaryWindow>>,
     ball_query: Query<Entity, With<Ball>>,
     goal_query: Query<(Entity, &Goal)>,
     mut player_query: Query<&mut Player>,
+    mut ball_transform_query: Query<&mut Transform, With<Ball>>,
 ) {
     let ball_entity = ball_query.single();
 
@@ -127,6 +130,10 @@ pub fn handle_user_score(
                     println!(
                         "Player {} score is now {}",
                         goal.user_id, player.score
+                    );
+                    reset_ball_location(
+                        &window_query,
+                        &mut ball_transform_query,
                     );
                 }
             }

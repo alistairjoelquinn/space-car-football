@@ -1,11 +1,10 @@
+pub mod components;
+pub mod systems;
+
 use bevy::prelude::*;
 
-pub mod components;
-mod systems;
-
-use systems::*;
-
 use crate::game::resources::AppState;
+use systems::*;
 
 pub struct BallPlugin;
 
