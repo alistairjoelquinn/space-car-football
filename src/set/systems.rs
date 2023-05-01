@@ -97,7 +97,7 @@ pub fn spawn_obstacles(
             space_station_large_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(700.0, 500.0, 10.0),
+                    translation: Vec3::new(700., 500., 10.),
                     rotation: Quat::from_rotation_z(RIGHT),
                     scale: Vec3::splat(0.6),
                     ..default()
@@ -123,7 +123,7 @@ pub fn spawn_obstacles(
             rocket_3_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(800.0, 100.0, 10.0),
+                    translation: Vec3::new(800., 100., 10.),
                     rotation: Quat::from_rotation_z(PI + FRAC_PI_2),
                     scale: Vec3::splat(0.6),
                     ..default()
@@ -149,7 +149,7 @@ pub fn spawn_obstacles(
             grey_block_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(900.0, 250.0, 10.0),
+                    translation: Vec3::new(900., 250., 10.),
                     rotation: Quat::from_rotation_z(PI + FRAC_PI_4),
                     scale: Vec3::splat(1.6),
                     ..default()
@@ -174,7 +174,7 @@ pub fn spawn_obstacles(
             red_dot_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(250.0, 550.0, 10.0),
+                    translation: Vec3::new(250., 550., 10.),
                     scale: Vec3::splat(2.),
                     ..default()
                 },
@@ -198,7 +198,7 @@ pub fn spawn_obstacles(
             robot_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(400.0, 250.0, 10.0),
+                    translation: Vec3::new(400., 250., 10.),
                     scale: Vec3::splat(1.),
                     ..default()
                 },
@@ -280,35 +280,52 @@ pub fn spawn_goals(
     let window = window_query.get_single().unwrap();
 
     // goal for user 1
-    commands.spawn((
-        SpriteBundle {
-            transform: Transform {
-                translation: Vec3::new(
-                    window.width() / 2.0,
-                    window.height() / 2.0,
-                    0.0,
-                ),
-
+    commands
+        .spawn((
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(
+                        window.width() / 2.,
+                        window.height(),
+                        9.,
+                    ),
+                    ..default()
+                },
+                sprite: Sprite {
+                    color: Color::rgb(15., 150., 56.),
+                    custom_size: Some(Vec2::new(25., window.height() / 2.)),
+                    ..Default::default()
+                },
                 ..default()
             },
-            ..default()
-        },
-        Goal { userId: 1 },
-    ));
+            Goal { user_id: 1 },
+        ))
+        .insert(Collider::cuboid(10., 50.))
+        .insert(RigidBody::Fixed)
+        .insert(Restitution::coefficient(1.0));
 
     // goal for user 2
-    commands.spawn((
-        SpriteBundle {
-            transform: Transform {
-                translation: Vec3::new(
-                    window.width() / 2.0,
-                    window.height() / 2.0,
-                    0.0,
-                ),
+    commands
+        .spawn((
+            SpriteBundle {
+                transform: Transform {
+                    translation: Vec3::new(
+                        window.width() / 3.,
+                        window.height(),
+                        9.,
+                    ),
+                    ..default()
+                },
+                sprite: Sprite {
+                    color: Color::rgb(1., 1., 1.),
+                    custom_size: Some(Vec2::new(window.width(), 10.)),
+                    ..Default::default()
+                },
                 ..default()
             },
-            ..default()
-        },
-        Goal { userId: 1 },
-    ));
+            Goal { user_id: 2 },
+        ))
+        .insert(Collider::cuboid(10., 50.))
+        .insert(RigidBody::Fixed)
+        .insert(Restitution::coefficient(1.));
 }

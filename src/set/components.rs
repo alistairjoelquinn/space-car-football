@@ -15,5 +15,5 @@ pub struct Meteor {
 
 #[derive(Component)]
 pub struct Goal {
-    pub userId: u32,
+    pub user_id: u32,
 }
