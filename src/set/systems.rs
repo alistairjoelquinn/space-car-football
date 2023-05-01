@@ -227,8 +227,8 @@ pub fn spawn_obstacles(
             single_convex_polyline_collider_translated(meteor_1_image).unwrap();
 
         let coords = Coords {
-            x: 0. + (index as f32 * 275.),
-            y: 700. - (index as f32 * 175.),
+            x: 0. + (index as f32 * 300.),
+            y: 700. - (index as f32 * 200.),
             z: 10.,
         };
 
@@ -240,7 +240,7 @@ pub fn spawn_obstacles(
                 SpriteBundle {
                     transform: Transform {
                         translation: Vec3::new(coords.x, coords.y, coords.z),
-                        scale: Vec3::splat(0.5),
+                        scale: Vec3::splat(0.4),
                         ..default()
                     },
                     texture: asset_server.load("sprites/space/meteor_1.png"),
