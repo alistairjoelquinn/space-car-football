@@ -5,10 +5,8 @@ use bevy::{asset::LoadState, prelude::*};
 use bevy_rapier2d::prelude::*;
 
 use crate::ball::components::Ball;
-use crate::player::components::Player;
+use crate::game::resources::{AppState, GameAsset};
 use crate::set::components::Goal;
-
-use super::resources::{AppState, GameAsset};
 
 pub fn spawn_camera(
     mut commands: Commands,
