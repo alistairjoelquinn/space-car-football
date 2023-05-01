@@ -6,6 +6,7 @@ use bevy_rapier2d::prelude::*;
 
 use crate::ball::components::Ball;
 use crate::game::resources::{AppState, GameAsset};
+use crate::player::components::Player;
 use crate::set::components::Goal;
 
 pub fn spawn_camera(
@@ -111,15 +112,24 @@ pub fn handle_user_score(
     rapier_context: Res<RapierContext>,
     ball_query: Query<Entity, With<Ball>>,
     goal_query: Query<(Entity, &Goal)>,
+    mut player_query: Query<&mut Player>,
 ) {
     let ball_entity = ball_query.single();
 
     for (goal_entity, goal) in goal_query.iter() {
-        println!("Goal: {:?}", goal);
         if rapier_context.intersection_pair(goal_entity, ball_entity)
             == Some(true)
         {
-            println!("Player {} just conceded a point", goal.user_id);
+            println!("Player {} just scored a point", goal.user_id);
+            for mut player in player_query.iter_mut() {
+                if player.id == goal.user_id {
+                    player.score += 1;
+                    println!(
+                        "Player {} score is now {}",
+                        goal.user_id, player.score
+                    );
+                }
+            }
         }
     }
 }

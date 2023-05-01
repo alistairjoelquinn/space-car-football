@@ -294,11 +294,11 @@ pub fn spawn_goals(
                 },
                 ..default()
             },
-            Goal { user_id: 1 },
+            Goal { user_id: 2 },
         ))
         .insert(ActiveEvents::COLLISION_EVENTS)
         .insert(Sensor)
-        .insert(Collider::cuboid(12.5, window.height() / 2.))
+        .insert(Collider::cuboid(12.5, window.height() / 4.))
         .insert(RigidBody::Fixed)
         .insert(Restitution::coefficient(1.0));
 
@@ -321,11 +321,11 @@ pub fn spawn_goals(
                 },
                 ..default()
             },
-            Goal { user_id: 2 },
+            Goal { user_id: 1 },
         ))
         .insert(ActiveEvents::COLLISION_EVENTS)
         .insert(Sensor)
-        .insert(Collider::cuboid(12.5, window.height() / 2.))
+        .insert(Collider::cuboid(12.5, window.height() / 4.))
         .insert(RigidBody::Fixed)
         .insert(Restitution::coefficient(1.0));
 }
