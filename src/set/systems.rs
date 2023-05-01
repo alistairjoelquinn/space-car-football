@@ -284,11 +284,7 @@ pub fn spawn_goals(
         .spawn((
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(
-                        window.width() / 2.,
-                        window.height(),
-                        9.,
-                    ),
+                    translation: Vec3::new(0., window.height() / 2., 9.),
                     ..default()
                 },
                 sprite: Sprite {
@@ -310,15 +306,15 @@ pub fn spawn_goals(
             SpriteBundle {
                 transform: Transform {
                     translation: Vec3::new(
-                        window.width() / 3.,
-                        window.height(),
+                        window.width(),
+                        window.height() / 2.,
                         9.,
                     ),
                     ..default()
                 },
                 sprite: Sprite {
-                    color: Color::rgb(1., 1., 1.),
-                    custom_size: Some(Vec2::new(window.width(), 10.)),
+                    color: Color::rgb(15., 150., 56.),
+                    custom_size: Some(Vec2::new(25., window.height() / 2.)),
                     ..Default::default()
                 },
                 ..default()
@@ -327,5 +323,5 @@ pub fn spawn_goals(
         ))
         .insert(Collider::cuboid(10., 50.))
         .insert(RigidBody::Fixed)
-        .insert(Restitution::coefficient(1.));
+        .insert(Restitution::coefficient(1.0));
 }
