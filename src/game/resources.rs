@@ -28,3 +28,8 @@ impl Default for GameTimer {
         }
     }
 }
+
+#[derive(Resource, Default)]
+pub struct Score {
+    pub value: u32,
+}
