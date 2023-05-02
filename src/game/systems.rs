@@ -109,7 +109,7 @@ pub fn handle_collision_sounds(
     }
 }
 
-pub fn handle_user_score(
+pub fn handle_user_goal(
     rapier_context: Res<RapierContext>,
     window_query: Query<&Window, With<PrimaryWindow>>,
     mut ball_query: Query<(Entity, &mut Transform), With<Ball>>,

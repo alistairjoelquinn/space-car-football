@@ -19,7 +19,6 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<AppState>()
             .add_startup_system(spawn_camera)
-            .init_resource::<Score>()
             .init_resource::<GameTimer>()
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
@@ -52,15 +51,16 @@ impl Plugin for GamePlugin {
                 despawn_game_screen.in_schedule(OnExit(AppState::Running)),
                 set_meteor_window_boundary.run_if(in_state(AppState::Running)),
                 handle_collision_sounds.run_if(in_state(AppState::Running)),
-                handle_user_score.run_if(in_state(AppState::Running)),
+                handle_user_goal.run_if(in_state(AppState::Running)),
                 // game over systems
                 spawn_game_over_screen.in_schedule(OnEnter(AppState::GameOver)),
                 despawn_game_over_screen
                     .in_schedule(OnExit(AppState::GameOver)),
             ))
             .add_systems((
+                // additional game logic systems
                 handle_goal_color.run_if(in_state(AppState::Running)),
-                update_score.run_if(in_state(AppState::Running)),
+                // update_score.run_if(in_state(AppState::Running)),
             ));
     }
 }
