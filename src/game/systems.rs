@@ -136,3 +136,5 @@ pub fn handle_user_score(
         }
     }
 }
+
+pub fn update_score() {}

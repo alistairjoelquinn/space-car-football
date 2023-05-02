@@ -31,5 +31,6 @@ impl Default for GameTimer {
 
 #[derive(Resource, Default)]
 pub struct Score {
-    pub value: u32,
+    pub player_1: u32,
+    pub player_2: u32,
 }

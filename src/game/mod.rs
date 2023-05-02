@@ -58,7 +58,7 @@ impl Plugin for GamePlugin {
                 despawn_game_over_screen
                     .in_schedule(OnExit(AppState::GameOver)),
             ))
-            .add_system((
+            .add_systems((
                 handle_goal_color.run_if(in_state(AppState::Running)),
                 update_score.run_if(in_state(AppState::Running)),
             ));
