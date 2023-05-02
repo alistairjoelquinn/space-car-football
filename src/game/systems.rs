@@ -137,4 +137,6 @@ pub fn handle_user_goal(
     }
 }
 
-pub fn update_score() {}
+pub fn spawn_hud() {}
+
+pub fn despawn_hud() {}

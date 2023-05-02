@@ -46,21 +46,22 @@ impl Plugin for GamePlugin {
                 play_menu_music.in_schedule(OnEnter(AppState::Menu)),
                 despawn_menu_screen.in_schedule(OnExit(AppState::Menu)),
                 click_play_button.run_if(in_state(AppState::Menu)),
-                // game systems
+                // game display systems
                 spawn_game_screen.in_schedule(OnEnter(AppState::Running)),
                 despawn_game_screen.in_schedule(OnExit(AppState::Running)),
-                set_meteor_window_boundary.run_if(in_state(AppState::Running)),
-                handle_collision_sounds.run_if(in_state(AppState::Running)),
-                handle_user_goal.run_if(in_state(AppState::Running)),
+                spawn_hud.in_schedule(OnEnter(AppState::Running)),
+                despawn_hud.in_schedule(OnExit(AppState::Running)),
                 // game over systems
                 spawn_game_over_screen.in_schedule(OnEnter(AppState::GameOver)),
                 despawn_game_over_screen
                     .in_schedule(OnExit(AppState::GameOver)),
             ))
             .add_systems((
-                // additional game logic systems
+                // game logic systems
                 handle_goal_color.run_if(in_state(AppState::Running)),
-                // update_score.run_if(in_state(AppState::Running)),
+                set_meteor_window_boundary.run_if(in_state(AppState::Running)),
+                handle_collision_sounds.run_if(in_state(AppState::Running)),
+                handle_user_goal.run_if(in_state(AppState::Running)),
             ));
     }
 }
