@@ -19,7 +19,7 @@ impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state::<AppState>()
             .add_startup_system(spawn_camera)
-            .init_resource::<GameTimer>()
+            .init_resource::<GoalTimer>()
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {

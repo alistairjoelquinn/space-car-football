@@ -17,14 +17,16 @@ pub enum AppState {
 }
 
 #[derive(Resource)]
-pub struct GameTimer {
+pub struct GoalTimer {
     pub timer: Timer,
+    pub color: Color,
 }
 
-impl Default for GameTimer {
+impl Default for GoalTimer {
     fn default() -> Self {
         Self {
-            timer: Timer::from_seconds(5., TimerMode::Repeating),
+            timer: Timer::from_seconds(1., TimerMode::Repeating),
+            color: Color::WHITE,
         }
     }
 }

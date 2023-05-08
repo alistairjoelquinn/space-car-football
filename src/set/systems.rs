@@ -5,7 +5,7 @@ use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
 use crate::ball::components::Ball;
-use crate::game::resources::{GameAsset, GameTimer};
+use crate::game::resources::{GameAsset, GoalTimer};
 use crate::player::RIGHT;
 use crate::set::components::{Goal, Meteor, SpaceBarrier};
 
@@ -335,26 +335,24 @@ pub fn handle_goal_color(
     rapier_context: Res<RapierContext>,
     mut goal_query: Query<(Entity, &mut Sprite), With<Goal>>,
     ball_query: Query<Entity, With<Ball>>,
-    mut game_timer: ResMut<GameTimer>,
+    mut goal_timer: ResMut<GoalTimer>,
     time: Res<Time>,
 ) {
     let ball = ball_query.single();
 
-    let mut goal_is_green = false;
-
-    if goal_is_green == true {
-        if game_timer.timer.finished() {
-            goal_is_green = false;
-        } else {
-            game_timer.timer.tick(time.delta());
-        }
-    }
-
     for (goal, mut sprite) in goal_query.iter_mut() {
         if rapier_context.intersection_pair(goal, ball) == Some(true) {
             println!("Goal!");
+            goal_timer.color = Color::GREEN;
             sprite.color = Color::GREEN;
-            goal_is_green = true;
         }
     }
+
+    if goal_timer.timer.finished() {
+        if let Some((_, mut sprite)) = goal_query.iter_mut().next() {
+            sprite.color = Color::rgb(15., 150., 56.);
+        }
+    }
+
+    goal_timer.timer.tick(time.delta());
 }

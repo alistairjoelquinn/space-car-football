@@ -10,7 +10,7 @@ use super::*;
 use crate::game::resources::GameAsset;
 use crate::player::components::Action;
 
-pub const PLAYER_SPEED: f32 = 300.0;
+pub const PLAYER_SPEED: f32 = 600.0;
 
 pub fn spawn_players(
     mut commands: Commands,
