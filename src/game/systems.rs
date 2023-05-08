@@ -9,7 +9,7 @@ use crate::ball::systems::reset_ball_location;
 use crate::game::resources::{AppState, GameAsset};
 use crate::player::components::Player;
 use crate::set::components::Goal;
-use crate::user_interface::components::{Hud, Score};
+use crate::user_interface::components::{Hud, Player1Score, Player2Score};
 
 pub fn spawn_camera(
     mut commands: Commands,
@@ -138,7 +138,22 @@ pub fn handle_user_goal(
     }
 }
 
-pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn spawn_hud(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    player_query: Query<&Player>,
+) {
+    let mut player_1_score = Player1Score { value: 0 };
+    let mut player_2_score = Player2Score { value: 0 };
+
+    for player in player_query.iter() {
+        if player.id == 1 {
+            player_1_score.value = player.score;
+        } else {
+            player_2_score.value = player.score;
+        }
+    }
+
     commands
         .spawn((
             NodeBundle {
@@ -181,7 +196,7 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                             style: Style { ..default() },
                             text: Text {
                                 sections: vec![TextSection::new(
-                                    "0",
+                                    player_1_score.value.to_string(),
                                     TextStyle {
                                         font: asset_server
                                             .load("fonts/PressStart2P.ttf"),
@@ -194,7 +209,7 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                             },
                             ..default()
                         },
-                        Score {},
+                        Player1Score { value: 0 },
                     ));
                 });
             // player 2 score
@@ -223,7 +238,7 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                             style: Style { ..default() },
                             text: Text {
                                 sections: vec![TextSection::new(
-                                    "0",
+                                    player_2_score.value.to_string(),
                                     TextStyle {
                                         font: asset_server
                                             .load("fonts/PressStart2P.ttf"),
@@ -236,7 +251,7 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                             },
                             ..default()
                         },
-                        Score {},
+                        Player2Score { value: 0 },
                     ));
                 });
         });
