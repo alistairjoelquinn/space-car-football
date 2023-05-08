@@ -9,6 +9,7 @@ use crate::ball::systems::reset_ball_location;
 use crate::game::resources::{AppState, GameAsset};
 use crate::player::components::Player;
 use crate::set::components::Goal;
+use crate::user_interface::components::{Hud, Score};
 
 pub fn spawn_camera(
     mut commands: Commands,
@@ -137,6 +138,108 @@ pub fn handle_user_goal(
     }
 }
 
-pub fn spawn_hud() {}
+pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands
+        .spawn((
+            NodeBundle {
+                style: Style {
+                    display: Display::Flex,
+                    flex_direction: FlexDirection::Row,
+                    justify_content: JustifyContent::SpaceBetween,
+                    align_items: AlignItems::Center,
+                    size: Size::new(Val::Percent(100.0), Val::Percent(15.0)),
+                    ..default()
+                },
+                ..default()
+            },
+            Hud {},
+        ))
+        .with_children(|parent| {
+            // Player 1 score
+            parent
+                .spawn(NodeBundle {
+                    style: Style {
+                        display: Display::Flex,
+                        flex_direction: FlexDirection::Row,
+                        justify_content: JustifyContent::Center,
+                        align_items: AlignItems::Center,
+                        size: Size::new(Val::Px(200.0), Val::Percent(80.0)),
+                        margin: UiRect::new(
+                            Val::Px(32.0),
+                            Val::Px(0.0),
+                            Val::Px(0.0),
+                            Val::Px(0.0),
+                        ),
+                        ..default()
+                    },
+                    background_color: Color::NONE.into(),
+                    ..default()
+                })
+                .with_children(|parent| {
+                    parent.spawn((
+                        TextBundle {
+                            style: Style { ..default() },
+                            text: Text {
+                                sections: vec![TextSection::new(
+                                    "0",
+                                    TextStyle {
+                                        font: asset_server
+                                            .load("fonts/PressStart2P.ttf"),
+                                        font_size: 64.0,
+                                        color: Color::rgb(1.0, 1.0, 1.0),
+                                    },
+                                )],
+                                alignment: TextAlignment::Center,
+                                ..default()
+                            },
+                            ..default()
+                        },
+                        Score {},
+                    ));
+                });
+            // player 2 score
+            parent
+                .spawn(NodeBundle {
+                    style: Style {
+                        display: Display::Flex,
+                        flex_direction: FlexDirection::Row,
+                        justify_content: JustifyContent::Center,
+                        align_items: AlignItems::Center,
+                        size: Size::new(Val::Px(200.0), Val::Percent(80.0)),
+                        margin: UiRect::new(
+                            Val::Px(0.0),
+                            Val::Px(32.0),
+                            Val::Px(0.0),
+                            Val::Px(0.0),
+                        ),
+                        ..default()
+                    },
+                    background_color: Color::NONE.into(),
+                    ..default()
+                })
+                .with_children(|parent| {
+                    parent.spawn((
+                        TextBundle {
+                            style: Style { ..default() },
+                            text: Text {
+                                sections: vec![TextSection::new(
+                                    "0",
+                                    TextStyle {
+                                        font: asset_server
+                                            .load("fonts/PressStart2P.ttf"),
+                                        font_size: 64.0,
+                                        color: Color::rgb(1.0, 1.0, 1.0),
+                                    },
+                                )],
+                                alignment: TextAlignment::Center,
+                                ..default()
+                            },
+                            ..default()
+                        },
+                        Score {},
+                    ));
+                });
+        });
+}
 
 pub fn despawn_hud() {}

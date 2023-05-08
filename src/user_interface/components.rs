@@ -14,3 +14,9 @@ pub struct Running {}
 
 #[derive(Component)]
 pub struct GameOver {}
+
+#[derive(Component)]
+pub struct Hud {}
+
+#[derive(Component)]
+pub struct Score {}
