@@ -348,7 +348,7 @@ pub fn handle_goal_color(
     }
 
     if goal_timer.timer.finished() {
-        if let Some((_, mut sprite)) = goal_query.iter_mut().next() {
+        for (_, mut sprite) in goal_query.iter_mut() {
             sprite.color = Color::rgb(15., 150., 56.);
         }
     }
