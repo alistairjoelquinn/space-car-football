@@ -207,11 +207,9 @@ pub fn update_score_text(
     if score.is_changed() {
         for (i, mut text) in text_query.iter_mut().enumerate() {
             if i == 0 {
-                text.sections[0].value =
-                    format!("{}", score.player_one.to_string());
+                text.sections[0].value = score.player_one.to_string();
             } else {
-                text.sections[0].value =
-                    format!("{}", score.player_two.to_string());
+                text.sections[0].value = score.player_two.to_string();
             }
         }
     }

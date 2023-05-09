@@ -100,7 +100,7 @@ pub fn build_menu_screen(
                     size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
                     ..default()
                 },
-                background_color: Color::YELLOW.into(),
+                background_color: Color::BLUE.into(),
                 ..default()
             },
             Menu {},
@@ -113,10 +113,9 @@ pub fn build_menu_screen(
                         flex_direction: FlexDirection::Column,
                         justify_content: JustifyContent::SpaceEvenly,
                         align_items: AlignItems::Center,
-                        size: Size::new(Val::Px(400.0), Val::Px(300.0)),
+                        size: Size::new(Val::Px(800.0), Val::Px(300.0)),
                         ..default()
                     },
-                    background_color: Color::BLUE.into(),
                     ..default()
                 })
                 .with_children(|parent| {
@@ -124,7 +123,7 @@ pub fn build_menu_screen(
                     parent.spawn(TextBundle {
                         text: Text {
                             sections: vec![TextSection::new(
-                                "Main Menu",
+                                "Cars playing football in\n SPACE....crazy! First player\n to score 5 goals wins!",
                                 TextStyle {
                                     font: asset_server
                                         .load("fonts/PressStart2P.ttf"),
