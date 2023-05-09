@@ -1,13 +1,11 @@
-use bevy::prelude::*;
-use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
-
-pub mod colliders;
 pub mod components;
 pub mod systems;
 
-use systems::*;
+use bevy::prelude::*;
+use std::f32::consts::{FRAC_PI_2, FRAC_PI_4, PI};
 
 use crate::game::resources::AppState;
+use crate::player::systems::*;
 
 // rotation in radians for player movement
 pub const TOP_RIGHT: f32 = FRAC_PI_4;
