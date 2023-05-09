@@ -19,4 +19,4 @@ pub struct GameOver {}
 pub struct Hud {}
 
 #[derive(Component)]
-pub struct Score;
+pub struct ScoreText;

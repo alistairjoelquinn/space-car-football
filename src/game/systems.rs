@@ -9,7 +9,9 @@ use crate::ball::systems::reset_ball_location;
 use crate::game::resources::{AppState, GameAsset};
 use crate::player::components::Player;
 use crate::set::components::Goal;
-use crate::user_interface::components::{Hud, Score};
+use crate::user_interface::components::{Hud, ScoreText};
+
+use super::resources::Score;
 
 pub fn spawn_camera(
     mut commands: Commands,
@@ -116,6 +118,7 @@ pub fn handle_user_goal(
     mut ball_query: Query<(Entity, &mut Transform), With<Ball>>,
     goal_query: Query<(Entity, &Goal)>,
     mut player_query: Query<&mut Player>,
+    mut score: ResMut<Score>,
 ) {
     let (ball_entity, mut ball_transform) = ball_query.single_mut();
 
@@ -131,6 +134,11 @@ pub fn handle_user_goal(
                         "Player {} score is now {}",
                         goal.user_id, player.score
                     );
+                    if player.id == 1 {
+                        score.player_one = player.score;
+                    } else {
+                        score.player_two = player.score;
+                    }
                     reset_ball_location(&window_query, &mut ball_transform);
                 }
             }
@@ -181,7 +189,7 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                             },
                             ..default()
                         },
-                        Score,
+                        ScoreText,
                     ));
                 });
             // player 2 score
@@ -210,10 +218,27 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                             },
                             ..default()
                         },
-                        Score,
+                        ScoreText,
                     ));
                 });
         });
+}
+
+pub fn update_score_text(
+    mut text_query: Query<&mut Text, With<ScoreText>>,
+    score: Res<Score>,
+) {
+    if score.is_changed() {
+        for (i, mut text) in text_query.iter_mut().enumerate() {
+            if i == 0 {
+                text.sections[0].value =
+                    format!("{}", score.player_one.to_string());
+            } else {
+                text.sections[0].value =
+                    format!("{}", score.player_two.to_string());
+            }
+        }
+    }
 }
 
 pub fn despawn_hud() {}

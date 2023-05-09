@@ -30,3 +30,9 @@ impl Default for GoalTimer {
         }
     }
 }
+
+#[derive(Resource, Default, Debug)]
+pub struct Score {
+    pub player_one: u32,
+    pub player_two: u32,
+}

@@ -20,6 +20,7 @@ impl Plugin for GamePlugin {
         app.add_state::<AppState>()
             .add_startup_system(spawn_camera)
             .init_resource::<GoalTimer>()
+            .init_resource::<Score>()
             .insert_resource(GameAsset::default())
             .add_plugins(DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
