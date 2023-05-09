@@ -146,8 +146,8 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                     display: Display::Flex,
                     flex_direction: FlexDirection::Row,
                     justify_content: JustifyContent::SpaceBetween,
-                    align_items: AlignItems::Center,
-                    size: Size::new(Val::Percent(100.), Val::Percent(15.)),
+                    align_items: AlignItems::Start,
+                    size: Size::new(Val::Percent(100.), Val::Percent(10.)),
                     ..default()
                 },
                 ..default()
@@ -159,12 +159,9 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
             parent
                 .spawn(NodeBundle {
                     style: Style {
-                        display: Display::Flex,
-                        justify_content: JustifyContent::Center,
-                        align_items: AlignItems::Center,
+                        margin: UiRect::all(Val::Px(20.)),
                         ..default()
                     },
-                    background_color: Color::NONE.into(),
                     ..default()
                 })
                 .with_children(|parent| {
@@ -180,7 +177,6 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                                         color: Color::WHITE,
                                     },
                                 )],
-                                alignment: TextAlignment::Center,
                                 ..default()
                             },
                             ..default()
@@ -192,12 +188,9 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
             parent
                 .spawn(NodeBundle {
                     style: Style {
-                        display: Display::Flex,
-                        justify_content: JustifyContent::Center,
-                        align_items: AlignItems::Center,
+                        margin: UiRect::all(Val::Px(20.)),
                         ..default()
                     },
-                    background_color: Color::NONE.into(),
                     ..default()
                 })
                 .with_children(|parent| {
@@ -209,11 +202,10 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
                                     TextStyle {
                                         font: asset_server
                                             .load("fonts/PressStart2P.ttf"),
-                                        font_size: 64.0,
-                                        color: Color::rgb(1.0, 1.0, 1.0),
+                                        font_size: 60.,
+                                        color: Color::WHITE,
                                     },
                                 )],
-                                alignment: TextAlignment::Center,
                                 ..default()
                             },
                             ..default()
