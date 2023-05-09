@@ -5,9 +5,8 @@ use bevy_rapier2d::prelude::*;
 use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 use leafwing_input_manager::prelude::*;
 
-use super::components::Player;
 use crate::game::resources::GameAsset;
-use crate::player::components::Action;
+use crate::player::components::{Action, Player};
 
 pub const PLAYER_SPEED: f32 = 600.0;
 

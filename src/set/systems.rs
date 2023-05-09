@@ -6,10 +6,8 @@ use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 
 use crate::ball::components::Ball;
 use crate::game::resources::{GameAsset, GoalTimer};
-use crate::player::RIGHT;
 use crate::set::components::{Goal, Meteor, SpaceBarrier};
-
-use super::GAME_WHITE;
+use crate::set::GAME_WHITE;
 
 pub fn spawn_space_barriers(
     commands: &mut Commands,
@@ -101,7 +99,7 @@ pub fn spawn_obstacles(
             SpriteBundle {
                 transform: Transform {
                     translation: Vec3::new(700., 500., 10.),
-                    rotation: Quat::from_rotation_z(RIGHT),
+                    rotation: Quat::from_rotation_z(0.),
                     scale: Vec3::splat(0.6),
                     ..default()
                 },
