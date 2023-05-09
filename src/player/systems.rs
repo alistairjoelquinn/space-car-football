@@ -6,7 +6,6 @@ use bevy_rapier_collider_gen::single_convex_polyline_collider_translated;
 use leafwing_input_manager::prelude::*;
 
 use super::components::Player;
-use super::*;
 use crate::game::resources::GameAsset;
 use crate::player::components::Action;
 
@@ -35,7 +34,7 @@ pub fn spawn_players(
             SpriteBundle {
                 transform: Transform {
                     translation: Vec3::new(100.0, window.height() / 2.0, 10.0),
-                    rotation: Quat::from_rotation_z(RIGHT),
+                    rotation: Quat::from_rotation_z(0.),
                     ..default()
                 },
                 texture: asset_server.load("sprites/car_one.png"),
@@ -80,7 +79,7 @@ pub fn spawn_players(
                         window.height() / 2.0,
                         10.0,
                     ),
-                    rotation: Quat::from_rotation_z(RIGHT),
+                    rotation: Quat::from_rotation_z(0.),
                     ..default()
                 },
                 texture: asset_server.load("sprites/car_two.png"),
