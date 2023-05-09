@@ -1,4 +1,3 @@
-pub mod components;
 pub mod resources;
 pub mod systems;
 
@@ -6,12 +5,11 @@ use bevy::prelude::*;
 use bevy::window::PresentMode;
 use leafwing_input_manager::prelude::*;
 
-use super::game::resources::*;
-use super::game::systems::*;
-use super::user_interface::systems::*;
+use crate::game::resources::*;
+use crate::game::systems::*;
 use crate::player::components::Action;
 use crate::set::systems::*;
-use resources::AppState;
+use crate::user_interface::systems::*;
 
 pub struct GamePlugin;
 

@@ -4,10 +4,9 @@ pub mod systems;
 
 use bevy::prelude::*;
 
+use crate::ball::resources::BallTimer;
+use crate::ball::systems::*;
 use crate::game::resources::AppState;
-
-use resources::BallTimer;
-use systems::*;
 
 pub struct BallPlugin;
 
