@@ -63,6 +63,7 @@ impl Plugin for GamePlugin {
                 set_meteor_window_boundary.run_if(in_state(AppState::Running)),
                 handle_collision_sounds.run_if(in_state(AppState::Running)),
                 handle_user_goal.run_if(in_state(AppState::Running)),
+                update_score_text.run_if(in_state(AppState::Running)),
             ));
     }
 }
