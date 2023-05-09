@@ -124,7 +124,7 @@ pub fn spawn_obstacles(
             rocket_3_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(800., 100., 10.),
+                    translation: Vec3::new(600., 100., 10.),
                     rotation: Quat::from_rotation_z(PI + FRAC_PI_2),
                     scale: Vec3::splat(0.6),
                     ..default()
@@ -150,9 +150,9 @@ pub fn spawn_obstacles(
             grey_block_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(900., 250., 10.),
+                    translation: Vec3::new(1000., 250., 10.),
                     rotation: Quat::from_rotation_z(PI + FRAC_PI_4),
-                    scale: Vec3::splat(1.6),
+                    scale: Vec3::splat(1.4),
                     ..default()
                 },
                 texture: asset_server.load("sprites/space/grey_block.png"),
@@ -199,7 +199,7 @@ pub fn spawn_obstacles(
             robot_collider,
             SpriteBundle {
                 transform: Transform {
-                    translation: Vec3::new(400., 250., 10.),
+                    translation: Vec3::new(300., 200., 10.),
                     scale: Vec3::splat(1.),
                     ..default()
                 },
@@ -342,7 +342,6 @@ pub fn handle_goal_color(
 
     for (goal, mut sprite) in goal_query.iter_mut() {
         if rapier_context.intersection_pair(goal, ball) == Some(true) {
-            println!("Goal!");
             goal_timer.color = Color::GREEN;
             sprite.color = Color::GREEN;
         }
