@@ -9,7 +9,7 @@ use crate::ball::systems::reset_ball_location;
 use crate::game::resources::{AppState, GameAsset};
 use crate::player::components::Player;
 use crate::set::components::Goal;
-use crate::user_interface::components::{Hud, Player1Score, Player2Score};
+use crate::user_interface::components::{Hud, Score};
 
 pub fn spawn_camera(
     mut commands: Commands,
@@ -138,22 +138,7 @@ pub fn handle_user_goal(
     }
 }
 
-pub fn spawn_hud(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    player_query: Query<&Player>,
-) {
-    let mut player_1_score = Player1Score { value: 0 };
-    let mut player_2_score = Player2Score { value: 0 };
-
-    for player in player_query.iter() {
-        if player.id == 1 {
-            player_1_score.value = player.score;
-        } else {
-            player_2_score.value = player.score;
-        }
-    }
-
+pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn((
             NodeBundle {
@@ -162,7 +147,7 @@ pub fn spawn_hud(
                     flex_direction: FlexDirection::Row,
                     justify_content: JustifyContent::SpaceBetween,
                     align_items: AlignItems::Center,
-                    size: Size::new(Val::Percent(100.0), Val::Percent(15.0)),
+                    size: Size::new(Val::Percent(100.), Val::Percent(15.)),
                     ..default()
                 },
                 ..default()
@@ -175,16 +160,8 @@ pub fn spawn_hud(
                 .spawn(NodeBundle {
                     style: Style {
                         display: Display::Flex,
-                        flex_direction: FlexDirection::Row,
                         justify_content: JustifyContent::Center,
                         align_items: AlignItems::Center,
-                        size: Size::new(Val::Px(200.0), Val::Percent(80.0)),
-                        margin: UiRect::new(
-                            Val::Px(32.0),
-                            Val::Px(0.0),
-                            Val::Px(0.0),
-                            Val::Px(0.0),
-                        ),
                         ..default()
                     },
                     background_color: Color::NONE.into(),
@@ -193,15 +170,14 @@ pub fn spawn_hud(
                 .with_children(|parent| {
                     parent.spawn((
                         TextBundle {
-                            style: Style { ..default() },
                             text: Text {
                                 sections: vec![TextSection::new(
-                                    player_1_score.value.to_string(),
+                                    "0",
                                     TextStyle {
                                         font: asset_server
                                             .load("fonts/PressStart2P.ttf"),
-                                        font_size: 64.0,
-                                        color: Color::rgb(1.0, 1.0, 1.0),
+                                        font_size: 60.,
+                                        color: Color::WHITE,
                                     },
                                 )],
                                 alignment: TextAlignment::Center,
@@ -209,7 +185,7 @@ pub fn spawn_hud(
                             },
                             ..default()
                         },
-                        Player1Score { value: 0 },
+                        Score,
                     ));
                 });
             // player 2 score
@@ -217,16 +193,8 @@ pub fn spawn_hud(
                 .spawn(NodeBundle {
                     style: Style {
                         display: Display::Flex,
-                        flex_direction: FlexDirection::Row,
                         justify_content: JustifyContent::Center,
                         align_items: AlignItems::Center,
-                        size: Size::new(Val::Px(200.0), Val::Percent(80.0)),
-                        margin: UiRect::new(
-                            Val::Px(0.0),
-                            Val::Px(32.0),
-                            Val::Px(0.0),
-                            Val::Px(0.0),
-                        ),
                         ..default()
                     },
                     background_color: Color::NONE.into(),
@@ -235,10 +203,9 @@ pub fn spawn_hud(
                 .with_children(|parent| {
                     parent.spawn((
                         TextBundle {
-                            style: Style { ..default() },
                             text: Text {
                                 sections: vec![TextSection::new(
-                                    player_2_score.value.to_string(),
+                                    "0",
                                     TextStyle {
                                         font: asset_server
                                             .load("fonts/PressStart2P.ttf"),
@@ -251,7 +218,7 @@ pub fn spawn_hud(
                             },
                             ..default()
                         },
-                        Player2Score { value: 0 },
+                        Score,
                     ));
                 });
         });
