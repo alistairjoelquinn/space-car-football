@@ -63,22 +63,19 @@ pub fn ball_goal_timer(
     score: Res<Score>,
     time: Res<Time>,
 ) {
-    let mut timing = false;
-
     if score.is_changed() {
-        timing = true;
+        ball_timer.timing = true;
     }
 
     if ball_timer.timer.finished() {
-        println!("Timer finished");
-        ball_timer.timer.reset();
-        timing = false;
         let mut damping = ball_query.single_mut();
         damping.linear_damping = 0.2;
         damping.angular_damping = 0.2;
+        ball_timer.timer.reset();
+        ball_timer.timing = false;
     }
 
-    if timing {
+    if ball_timer.timing {
         ball_timer.timer.tick(time.delta());
     }
 }
