@@ -9,6 +9,8 @@ use crate::game::resources::{GameAsset, GoalTimer};
 use crate::player::RIGHT;
 use crate::set::components::{Goal, Meteor, SpaceBarrier};
 
+use super::GAME_WHITE;
+
 pub fn spawn_space_barriers(
     commands: &mut Commands,
     window_query: &Query<&Window, With<PrimaryWindow>>,
@@ -289,7 +291,7 @@ pub fn spawn_goals(
                     ..default()
                 },
                 sprite: Sprite {
-                    color: Color::rgb(15., 150., 56.),
+                    color: GAME_WHITE,
                     custom_size: Some(Vec2::new(25., window.height() / 2.)),
                     ..Default::default()
                 },
@@ -316,7 +318,7 @@ pub fn spawn_goals(
                     ..default()
                 },
                 sprite: Sprite {
-                    color: Color::rgb(15., 150., 56.),
+                    color: GAME_WHITE,
                     custom_size: Some(Vec2::new(25., window.height() / 2.)),
                     ..Default::default()
                 },
@@ -349,7 +351,7 @@ pub fn handle_goal_color(
 
     if goal_timer.timer.finished() {
         for (_, mut sprite) in goal_query.iter_mut() {
-            sprite.color = Color::rgb(15., 150., 56.);
+            sprite.color = GAME_WHITE;
         }
     }
 

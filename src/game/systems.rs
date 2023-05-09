@@ -157,64 +157,43 @@ pub fn spawn_hud(mut commands: Commands, asset_server: Res<AssetServer>) {
             Hud {},
         ))
         .with_children(|parent| {
-            // Player 1 score
-            parent
-                .spawn(NodeBundle {
-                    style: Style {
-                        margin: UiRect::all(Val::Px(20.)),
+            // Score containers for both players
+            create_hud_score_container(parent, &asset_server);
+            create_hud_score_container(parent, &asset_server);
+        });
+}
+
+fn create_hud_score_container(
+    parent: &mut ChildBuilder,
+    asset_server: &Res<AssetServer>,
+) {
+    parent
+        .spawn(NodeBundle {
+            style: Style {
+                margin: UiRect::all(Val::Px(20.)),
+                ..default()
+            },
+            ..default()
+        })
+        .with_children(|parent| {
+            parent.spawn((
+                TextBundle {
+                    text: Text {
+                        sections: vec![TextSection::new(
+                            "0",
+                            TextStyle {
+                                font: asset_server
+                                    .load("fonts/PressStart2P.ttf"),
+                                font_size: 60.,
+                                color: Color::WHITE,
+                            },
+                        )],
                         ..default()
                     },
                     ..default()
-                })
-                .with_children(|parent| {
-                    parent.spawn((
-                        TextBundle {
-                            text: Text {
-                                sections: vec![TextSection::new(
-                                    "0",
-                                    TextStyle {
-                                        font: asset_server
-                                            .load("fonts/PressStart2P.ttf"),
-                                        font_size: 60.,
-                                        color: Color::WHITE,
-                                    },
-                                )],
-                                ..default()
-                            },
-                            ..default()
-                        },
-                        ScoreText,
-                    ));
-                });
-            // player 2 score
-            parent
-                .spawn(NodeBundle {
-                    style: Style {
-                        margin: UiRect::all(Val::Px(20.)),
-                        ..default()
-                    },
-                    ..default()
-                })
-                .with_children(|parent| {
-                    parent.spawn((
-                        TextBundle {
-                            text: Text {
-                                sections: vec![TextSection::new(
-                                    "0",
-                                    TextStyle {
-                                        font: asset_server
-                                            .load("fonts/PressStart2P.ttf"),
-                                        font_size: 60.,
-                                        color: Color::WHITE,
-                                    },
-                                )],
-                                ..default()
-                            },
-                            ..default()
-                        },
-                        ScoreText,
-                    ));
-                });
+                },
+                ScoreText,
+            ));
         });
 }
 
