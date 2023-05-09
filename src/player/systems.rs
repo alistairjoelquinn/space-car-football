@@ -60,7 +60,7 @@ pub fn spawn_players(
                 .build(),
             ..default()
         })
-        .insert(Player { id: 1, score: 0 });
+        .insert(Player { id: 1 });
 
     let car_two_handle = game_assets.image_handles.get("car_two_handle");
     if car_two_handle.is_none() {
@@ -105,7 +105,7 @@ pub fn spawn_players(
                 .build(),
             ..default()
         })
-        .insert(Player { id: 2, score: 0 });
+        .insert(Player { id: 2 });
 }
 
 const MOVE_FORCE: f32 = 1500.0;

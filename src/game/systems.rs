@@ -117,7 +117,7 @@ pub fn handle_user_goal(
     window_query: Query<&Window, With<PrimaryWindow>>,
     mut ball_query: Query<(Entity, &mut Transform), With<Ball>>,
     goal_query: Query<(Entity, &Goal)>,
-    mut player_query: Query<&mut Player>,
+    player_query: Query<&Player>,
     mut score: ResMut<Score>,
 ) {
     let (ball_entity, mut ball_transform) = ball_query.single_mut();
@@ -126,18 +126,12 @@ pub fn handle_user_goal(
         if rapier_context.intersection_pair(goal_entity, ball_entity)
             == Some(true)
         {
-            println!("Player {} just scored a point", goal.user_id);
-            for mut player in player_query.iter_mut() {
+            for player in player_query.iter() {
                 if player.id == goal.user_id {
-                    player.score += 1;
-                    println!(
-                        "Player {} score is now {}",
-                        goal.user_id, player.score
-                    );
                     if player.id == 1 {
-                        score.player_one = player.score;
+                        score.player_one += 1;
                     } else {
-                        score.player_two = player.score;
+                        score.player_two += 1;
                     }
                     reset_ball_location(&window_query, &mut ball_transform);
                 }
