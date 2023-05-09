@@ -6,12 +6,10 @@ use bevy_rapier2d::prelude::*;
 
 use crate::ball::components::Ball;
 use crate::ball::systems::reset_ball_location;
-use crate::game::resources::{AppState, GameAsset};
+use crate::game::resources::{AppState, GameAsset, Score};
 use crate::player::components::Player;
 use crate::set::components::Goal;
 use crate::user_interface::components::{Hud, ScoreText};
-
-use super::resources::Score;
 
 pub fn spawn_camera(
     mut commands: Commands,
