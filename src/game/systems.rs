@@ -115,12 +115,13 @@ pub fn handle_collision_sounds(
 pub fn handle_user_goal(
     rapier_context: Res<RapierContext>,
     window_query: Query<&Window, With<PrimaryWindow>>,
-    mut ball_query: Query<(Entity, &mut Transform), With<Ball>>,
+    mut ball_query: Query<(Entity, &mut Transform, &mut Damping), With<Ball>>,
     goal_query: Query<(Entity, &Goal)>,
     player_query: Query<&Player>,
     mut score: ResMut<Score>,
 ) {
-    let (ball_entity, mut ball_transform) = ball_query.single_mut();
+    let (ball_entity, mut ball_transform, mut ball_damping) =
+        ball_query.single_mut();
 
     for (goal_entity, goal) in goal_query.iter() {
         if rapier_context.intersection_pair(goal_entity, ball_entity)
@@ -133,7 +134,11 @@ pub fn handle_user_goal(
                     } else {
                         score.player_two += 1;
                     }
-                    reset_ball_location(&window_query, &mut ball_transform);
+                    reset_ball_location(
+                        &window_query,
+                        &mut ball_transform,
+                        &mut ball_damping,
+                    );
                 }
             }
         }
